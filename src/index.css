@@ -3797,3 +3797,30 @@ nav.scrolled {
     from { transform: scale(0.8); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+
+/* PARTÍCULAS BARRA NIVEL */
+.level-progress {
+    position: relative;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    top: 50%;
+}
+
+.p1 { width: 4px; height: 4px; left: 10%; animation: particlesMove 3s infinite; }
+.p2 { width: 6px; height: 6px; left: 30%; animation: particlesMove 4s infinite 1s; }
+.p3 { width: 3px; height: 3px; left: 50%; animation: particlesMove 2.5s infinite 0.5s; }
+.p4 { width: 5px; height: 5px; left: 70%; animation: particlesMove 5s infinite 2s; }
+.p5 { width: 4px; height: 4px; left: 90%; animation: particlesMove 3.5s infinite 1.5s; }
+
+@keyframes particlesMove {
+    0% { transform: translate(0, -50%) opacity(0); }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translate(100px, -50%) opacity(0); }
+}
