@@ -106,7 +106,6 @@ function DashboardUsuario() {
                 })}
               </div>
             </div>
-            <button className="btn-text">VER CALENDARIO COMPLETO &#10140;</button>
           </div>
 
           {/* ASISTENCIA */}
