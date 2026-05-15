@@ -3195,9 +3195,15 @@ nav.scrolled {
 }
 
 .sidebar-logo {
-  width: 100px;
-  opacity: 0.8;
-  filter: grayscale(1) invert(1);
+  width: 120px;
+  filter: brightness(0) invert(1); /* Logo blanco puro */
+  opacity: 0.9;
+  transition: 0.3s;
+}
+
+.sidebar-logo:hover {
+  opacity: 1;
+  transform: scale(1.05);
 }
 
 .dashboard-main {

@@ -65,7 +65,9 @@ function DashboardUsuario() {
         </nav>
 
         <div className="sidebar-footer">
-          <img src="/img/logo.png" alt="Logo" className="sidebar-logo" />
+          <Link to="/">
+            <img src="/img/logo.png" alt="Logo" className="sidebar-logo" />
+          </Link>
         </div>
       </aside>
 
