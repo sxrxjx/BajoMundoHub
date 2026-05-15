@@ -6,7 +6,7 @@ function Home() {
   const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
 
   useEffect(() => {
-    const targetDate = new Date('2026-05-10T23:59:59').getTime();
+    const targetDate = new Date('2026-06-10T23:59:59').getTime();
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
