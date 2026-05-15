@@ -165,7 +165,7 @@ function DashboardUsuario() {
                 <button className="btn-connect">+</button>
               </div>
             </div>
-            <button className="btn-text">DESCUBRE MÁS &#10140;</button>
+            <button className="btn-text">DESCUBRE MÁS <span>&#10140;</span></button>
           </div>
 
           {/* RECOMPENSAS */}
@@ -192,7 +192,7 @@ function DashboardUsuario() {
                 </div>
               </div>
             </div>
-            <button className="btn-text">TODAS LAS RECOMPENSAS &#10140;</button>
+            <button className="btn-text">TODAS LAS RECOMPENSAS <span>&#10140;</span></button>
           </div>
 
           {/* MI GALERÍA */}
