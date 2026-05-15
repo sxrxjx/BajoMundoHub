@@ -131,7 +131,6 @@ function DashboardUsuario() {
             </div>
             <div className="level-indicator">
               <div className="level-bar">
-                {/* Definimos el progreso aquí (70%) */}
                 <div className="level-progress" style={{width: '70%'}}></div>
                 <div className="level-badge" style={{left: '70%'}}>Lv 10</div>
               </div>
