@@ -3512,7 +3512,7 @@ nav.scrolled {
 .gallery-mosaic {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 55px); /* Reducido de 65px para ganar espacio */
+  grid-template-rows: repeat(2, 60px); /* Un poco más alto ahora que hay menos filas */
   gap: 0.5rem;
   flex-grow: 1;
 }
@@ -3533,10 +3533,10 @@ nav.scrolled {
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* Algunas fotos más grandes que otras */
-.mos-1 { grid-column: span 2; }
-.mos-2 { grid-row: span 2; }
-.mos-6 { grid-column: span 2; }
+/* Mosaico de 5 fotos */
+.mos-1 { grid-column: span 2; grid-row: span 2; }
+.mos-2 { grid-column: span 1; grid-row: span 1; }
+.mos-3 { grid-column: span 1; grid-row: span 1; }
 
 .btn-widget {
   background: black;
