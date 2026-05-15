@@ -3370,6 +3370,10 @@ nav.scrolled {
     margin-bottom: 0.5rem; /* Reducido drásticamente */
 }
 
+.gallery-box .widget-header {
+    margin-bottom: 0.5rem;
+}
+
 .widget-desc {
     font-family: "Bungee", cursive;
     font-size: 0.8rem;
