@@ -101,7 +101,7 @@ function Particles({ mode = 'float', color = 'rgba(255, 59, 48, 0.5)' }) {
         width: '100%', 
         height: '100%', 
         pointerEvents: 'none', 
-        zIndex: 1 
+        zIndex: 0 
       }}
     />
   );
