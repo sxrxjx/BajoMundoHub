@@ -57,8 +57,22 @@ function Login() {
         else navigate('/dashboard-usuario');
       }
     } catch (err) {
-      console.error(err);
-      setError('Error en la autenticación. Revisa tus datos.');
+      console.error("Firebase Error Code:", err.code);
+      console.error("Firebase Error Message:", err.message);
+      
+      if (err.code === 'auth/invalid-credential') {
+        setError('Email o contraseña incorrectos.');
+      } else if (err.code === 'auth/email-already-in-use') {
+        setError('Este email ya está registrado. Prueba a entrar en lugar de registrarte.');
+      } else if (err.code === 'auth/weak-password') {
+        setError('La contraseña es demasiado corta (mínimo 6 caracteres).');
+      } else if (err.code === 'auth/network-request-failed') {
+        setError('Error de conexión. Revisa tu internet.');
+      } else if (err.code === 'auth/configuration-not-found') {
+        setError('Error de configuración: ¿Has activado el Login por Email en la consola de Firebase?');
+      } else {
+        setError(`Error: ${err.message}`);
+      }
     } finally {
       setLoading(false);
     }
