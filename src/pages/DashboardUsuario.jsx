@@ -7,6 +7,14 @@ function DashboardUsuario() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedImg, setSelectedImg] = useState(null); // Estado para el Lightbox
+
+  // Datos mock de eventos
+  const events = {
+    10: { title: "Dembow Party", desc: "La discoteca se prende" },
+    21: { title: "Underground Battles", desc: "Freestyle en el bloque" },
+    28: { title: "Bajo Mundo Fest", desc: "El evento del año" }
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -202,18 +210,28 @@ function DashboardUsuario() {
               <span className="widget-icon">🖼️</span>
             </div>
             <div className="gallery-mosaic">
-              <img src="/img/1.png" alt="1" className="mos-1" />
-              <img src="/img/2.png" alt="2" className="mos-2" />
-              <img src="/img/4.png" alt="3" className="mos-3" />
-              <img src="/img/perfil-1.png" alt="4" className="mos-4" />
+              <img src="/img/1.png" alt="1" className="mos-1" onClick={() => setSelectedImg("/img/1.png")} />
+              <img src="/img/2.png" alt="2" className="mos-2" onClick={() => setSelectedImg("/img/2.png")} />
+              <img src="/img/4.png" alt="3" className="mos-3" onClick={() => setSelectedImg("/img/4.png")} />
+              <img src="/img/perfil-1.png" alt="4" className="mos-4" onClick={() => setSelectedImg("/img/perfil-1.png")} />
             </div>
             <button className="btn-text">MI CONTENIDO <span>&#10140;</span></button>
           </div>
 
         </div>
       </main>
+
+      {/* MODAL LIGHTBOX */}
+      {selectedImg && (
+        <div className="lightbox-overlay" onClick={() => setSelectedImg(null)}>
+          <div className="lightbox-content">
+            <button className="close-lightbox">&times;</button>
+            <img src={selectedImg} alt="Enlarged view" />
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default DashboardUsuario;
