@@ -3368,8 +3368,8 @@ nav.scrolled {
 
 .widget-desc {
     font-family: "Bungee", cursive;
-    font-size: 0.9rem;
-    margin-bottom: 1.2rem;
+    font-size: 0.8rem; /* Un pelín más pequeño */
+    margin-bottom: 0.8rem;
     color: #1a0a04;
     letter-spacing: 0.5px;
 }
@@ -3377,17 +3377,17 @@ nav.scrolled {
 .connections-list {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.5rem; /* Reducido de 0.8rem */
     flex-grow: 1;
 }
 
 .connection-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
   background: white;
-  padding: 0.8rem 1rem;
-  border-radius: 18px;
+  padding: 0.5rem 0.8rem; /* Reducido de 0.8rem 1rem */
+  border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   transition: 0.3s;
 }
@@ -3398,11 +3398,11 @@ nav.scrolled {
 }
 
 .connection-item img {
-  width: 45px;
-  height: 45px;
+  width: 35px; /* Reducido de 45px */
+  height: 35px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--lemon);
+  border: 1.5px solid var(--lemon);
 }
 
 .conn-info {
@@ -3414,13 +3414,13 @@ nav.scrolled {
 .conn-info strong {
     font-family: 'Inter', sans-serif;
     font-weight: 900;
-    font-size: 0.85rem;
+    font-size: 0.75rem; /* Reducido de 0.85rem */
     color: #1a0a04;
     text-transform: uppercase;
 }
 
 .conn-info span {
-    font-size: 0.7rem;
+    font-size: 0.65rem; /* Reducido de 0.7rem */
     color: rgba(26, 10, 4, 0.6);
     font-weight: 600;
 }
@@ -3429,10 +3429,10 @@ nav.scrolled {
     background: #1a0a04;
     color: white;
     border: none;
-    width: 32px;
-    height: 32px;
+    width: 28px; /* Reducido de 32px */
+    height: 28px;
     border-radius: 50%;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 900;
     cursor: pointer;
     transition: 0.3s;
