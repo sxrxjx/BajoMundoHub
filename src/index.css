@@ -3096,29 +3096,33 @@ nav.scrolled {
 }
 
 .dashboard-sidebar {
-  width: 280px;
+  width: 300px;
   background: #1a0a04;
-  padding: 3rem 2rem;
+  padding: 4rem 1.5rem;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(255,255,255,0.05);
+  justify-content: space-between; /* Reparte el espacio */
+  border-right: 1px solid rgba(255,255,255,0.1);
   position: fixed;
-  height: 100vh;
+  height: 100vh; /* Alto total */
+  top: 0;
+  left: 0;
   z-index: 100;
 }
 
 .sidebar-profile {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .profile-img-container {
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1.2rem;
   overflow: hidden;
-  border: 3px solid var(--lemon);
+  border: 4px solid var(--lemon);
+  box-shadow: 0 0 20px rgba(251, 255, 0, 0.2);
 }
 
 .profile-img {
@@ -3129,37 +3133,70 @@ nav.scrolled {
 
 .profile-name {
   font-family: "Bungee", cursive;
-  font-size: 1.8rem;
-  line-height: 1;
-  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
 }
 
 .profile-email {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .sidebar-nav ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 0.5rem;
 }
 
 .sidebar-nav li a {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  color: white;
+  gap: 1.2rem;
+  padding: 1rem 1.5rem;
+  color: rgba(255,255,255,0.7);
   text-decoration: none;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 0.9rem;
-  transition: 0.3s;
-  border-radius: 12px;
+  transition: all 0.3s ease;
+  border-radius: 15px;
 }
 
-.sidebar-nav li.active a, .sidebar-nav li a:hover {
-  background: rgba(255,255,255,0.05);
+.sidebar-nav li.active a, 
+.sidebar-nav li a:hover {
+  background: rgba(251, 255, 0, 0.08);
   color: var(--lemon);
+  transform: translateX(5px);
+}
+
+.sidebar-nav li a .icon {
+    font-size: 1.2rem;
+}
+
+.sidebar-footer {
+    padding-top: 2rem;
+    text-align: center;
+}
+
+.sidebar-logo {
+  width: 100px;
+  opacity: 0.8;
+  filter: grayscale(1) invert(1);
 }
 
 .dashboard-main {
