@@ -8,6 +8,7 @@ import Artistas from './pages/Artistas';
 import About from './pages/About';
 import Colabs from './pages/Colabs';
 import Login from './pages/Login';
+import DashboardUsuario from './pages/DashboardUsuario';
 import './index.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/colabs" element={<Colabs />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/dashboard-usuario" element={<DashboardUsuario />} />
           </Routes>
         </main>
 

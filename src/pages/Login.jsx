@@ -35,9 +35,9 @@ function Login() {
           // Redirigir según el rol
           if (userData.role === 'artista') navigate('/dashboard-artista');
           else if (userData.role === 'empresa') navigate('/dashboard-empresa');
-          else navigate('/');
+          else navigate('/dashboard-usuario');
         } else {
-          navigate('/');
+          navigate('/dashboard-usuario');
         }
       } else {
         // REGISTRO
@@ -54,7 +54,7 @@ function Login() {
         // Redirigir según el rol elegido
         if (role === 'artista') navigate('/dashboard-artista');
         else if (role === 'empresa') navigate('/dashboard-empresa');
-        else navigate('/');
+        else navigate('/dashboard-usuario');
       }
     } catch (err) {
       console.error(err);

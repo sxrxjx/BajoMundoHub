@@ -3086,3 +3086,254 @@ nav.scrolled {
     color: black !important;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
 }
+
+/* DASHBOARD USUARIO */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #3a1505;
+  color: white;
+}
+
+.dashboard-sidebar {
+  width: 280px;
+  background: #1a0a04;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
+}
+
+.sidebar-profile {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.profile-img-container {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  overflow: hidden;
+  border: 3px solid var(--lemon);
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-family: "Bungee", cursive;
+  font-size: 1.8rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.profile-email {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+}
+
+.sidebar-nav li a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  transition: 0.3s;
+  border-radius: 12px;
+}
+
+.sidebar-nav li.active a, .sidebar-nav li a:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--lemon);
+}
+
+.dashboard-main {
+  flex: 1;
+  margin-left: 280px;
+  padding: 3rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.widget-box {
+  background: #df9e7d;
+  border-radius: 20px;
+  padding: 2rem;
+  color: black;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.calendar-widget-box {
+  background: #000;
+  color: white;
+  grid-row: span 2;
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.widget-header h3 {
+  font-family: "Bungee", cursive;
+  font-size: 1.5rem;
+}
+
+.level-bar {
+  height: 40px;
+  background: rgba(0,0,0,0.1);
+  border-radius: 20px;
+  position: relative;
+  overflow: visible;
+  margin: 2rem 0;
+}
+
+.level-progress {
+  height: 100%;
+  background: linear-gradient(to right, #ff5e00, #ffbb00);
+  border-radius: 20px;
+}
+
+.level-badge {
+  position: absolute;
+  top: 50%;
+  right: 20%;
+  transform: translate(50%, -50%);
+  background: #ff0000;
+  color: white;
+  font-family: "Bungee", cursive;
+  padding: 0.5rem 1rem;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  font-size: 1.2rem;
+}
+
+.connection-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+}
+
+.connection-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.reward-card {
+  display: flex;
+  gap: 1rem;
+  background: #111;
+  color: white;
+  padding: 1rem;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+}
+
+.reward-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.gallery-mosaic {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.gallery-mosaic img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.btn-widget {
+  background: black;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-widget:hover {
+  background: var(--primary);
+}
+
+.btn-mini {
+  background: var(--lemon);
+  color: black;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 1rem;
+  display: block;
+  color: black;
+}
+
+.calendar-widget-box .btn-text {
+  color: white;
+}
+
+.mini-calendar {
+  text-align: center;
+}
+
+.calendar-grid-mini {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}
+
+.mini-date {
+  padding: 5px;
+}
+
+.mini-date.active {
+  background: var(--lemon);
+  color: black;
+  border-radius: 5px;
+}
