@@ -1023,7 +1023,7 @@ body>section.cta-banner.section-padding.cta-section>div>a.cta-link {
 }
 
 .event-hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/hero-eventos.gif');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img/hero-eventos.gif');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -1035,7 +1035,7 @@ body>section.cta-banner.section-padding.cta-section>div>a.cta-link {
 }
 
 .comunidad-hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/chief-artistas-set-2.gif');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img/chief-artistas-set-2.gif');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -1047,7 +1047,7 @@ body>section.cta-banner.section-padding.cta-section>div>a.cta-link {
 }
 
 .artist-hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/chief-artistas-set-1.gif');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img/chief-artistas-set-1.gif');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -1059,7 +1059,7 @@ body>section.cta-banner.section-padding.cta-section>div>a.cta-link {
 }
 
 .about-hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/AFTER-6.gif');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img/AFTER-6.gif');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -1071,7 +1071,7 @@ body>section.cta-banner.section-padding.cta-section>div>a.cta-link {
 }
 
 .colab-hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/hero-eventos.gif');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/img/hero-eventos.gif');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
