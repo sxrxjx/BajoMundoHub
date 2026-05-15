@@ -3451,6 +3451,57 @@ nav.scrolled {
 .mini-date.has-event {
   border: 2px solid var(--lemon);
   color: var(--lemon);
+  position: relative; /* Base para el globo */
+}
+
+.event-tooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(20, 20, 20, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--lemon);
+  color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  width: 180px;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.event-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: var(--lemon) transparent transparent transparent;
+}
+
+.mini-date.has-event:hover .event-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.event-tooltip strong {
+  display: block;
+  color: var(--lemon);
+  font-family: "Bungee", cursive;
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.event-tooltip p {
+  font-size: 0.7rem;
+  margin: 0;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.2;
 }
 
 .mini-date:hover {

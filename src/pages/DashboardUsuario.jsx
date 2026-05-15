@@ -96,12 +96,25 @@ function DashboardUsuario() {
                 {[...Array(daysInMonth)].map((_, i) => {
                   const dayNum = i + 1;
                   const isToday = dayNum === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
-                  const hasEvent = dayNum === 10 || dayNum === 21 || dayNum === 28;
+                  
+                  const events = {
+                    10: { title: "Dembow Party", desc: "La discoteca se prende" },
+                    21: { title: "Underground Battles", desc: "Freestyle en el bloque" },
+                    28: { title: "Bajo Mundo Fest", desc: "El evento del año" }
+                  };
+
+                  const event = events[dayNum];
                   
                   return (
-                    <span key={dayNum} className={`mini-date ${isToday ? 'is-today' : ''} ${hasEvent ? 'has-event' : ''}`}>
+                    <div key={dayNum} className={`mini-date ${isToday ? 'is-today' : ''} ${event ? 'has-event' : ''}`}>
                       {dayNum}
-                    </span>
+                      {event && (
+                        <div className="event-tooltip">
+                          <strong>{event.title}</strong>
+                          <p>{event.desc}</p>
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
