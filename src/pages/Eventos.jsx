@@ -3,7 +3,9 @@ import Particles from '../components/Particles';
 
 function Eventos() {
   const [activeYear, setActiveYear] = useState('2024');
-  const [currentDate, setCurrentDate] = useState(new Date(2025, 0, 1)); // Enero 2025
+  const [currentDate, setCurrentDate] = useState(new Date()); // Fecha de hoy por defecto
+
+  const today = new Date();
 
   const events = {
     '2023': [
@@ -39,9 +41,11 @@ function Eventos() {
     }
     // Días del mes
     for (let i = 1; i <= daysInMonth; i++) {
-      const isEvent = marchEvents.includes(i);
+      const isEvent = marchEvents.includes(i) && month === 2; // Solo para el ejemplo de Marzo
+      const isToday = i === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+      
       days.push(
-        <span key={i} className={isEvent ? 'has-event' : ''}>
+        <span key={i} className={`${isEvent ? 'has-event' : ''} ${isToday ? 'is-today' : ''}`}>
           {i}
         </span>
       );
