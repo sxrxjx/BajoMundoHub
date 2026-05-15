@@ -136,7 +136,7 @@ function DashboardUsuario() {
               </div>
               <h4 className="level-status">¡ESO ESTÁ PELUCHE!</h4>
               <p>Estás on fire, no te pierdes ni una, ¡qué bacano!</p>
-              <button className="btn-widget">FORMULARIO DE ASISTENCIA &#10140;</button>
+              <button className="btn-assistance">FORMULARIO DE ASISTENCIA <span>&#10140;</span></button>
             </div>
           </div>
 

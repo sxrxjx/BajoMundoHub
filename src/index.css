@@ -3319,17 +3319,52 @@ nav.scrolled {
 
 .level-status {
   font-family: "Bungee", cursive;
-  font-size: 1.5rem;
-  margin-bottom: 0.3rem;
+  font-size: 1.8rem; /* Aumentado para impacto */
+  margin-bottom: 0.2rem;
   line-height: 1;
-  color: black;
+  color: #1a0a04;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.3);
 }
 
 .level-indicator p {
-  font-size: 0.85rem;
-  color: rgba(0,0,0,0.6);
-  margin-bottom: 1rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  color: rgba(26, 10, 4, 0.7);
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.btn-assistance {
+    background: #1a0a04;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.btn-assistance:hover {
+    background: black;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-assistance span {
+    transition: 0.3s;
+    font-size: 1.1rem;
+}
+
+.btn-assistance:hover span {
+    transform: translateX(5px);
 }
 
 .connection-item {
