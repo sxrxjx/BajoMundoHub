@@ -6,7 +6,7 @@ function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-newsletter">
-            <h3>Newsletter</h3>
+            <h3>Únete a nuestra comunidad</h3>
             <p>Conecta con el flow del Bajo Mundo</p>
             <form className="newsletter-form">
               <input type="email" placeholder="Email" required />
