@@ -3516,7 +3516,7 @@ nav.scrolled {
 .gallery-mosaic {
   display: grid;
   grid-template-columns: 1.5fr 1fr; /* Izquierda más ancha */
-  grid-template-rows: repeat(3, 38px); /* 3 filas pequeñas */
+  grid-template-rows: repeat(3, 55px); /* Estirado de 48px a 55px */
   gap: 0.5rem;
   flex-grow: 1;
 }
