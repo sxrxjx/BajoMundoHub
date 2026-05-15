@@ -405,6 +405,17 @@ footer {
     font-size: 1.5rem;
     padding: 1.5rem 4rem;
     margin-top: 30px;
+    position: relative;
+}
+
+.btn-arrow {
+    display: inline-block;
+    margin-left: 10px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hero:hover .btn-arrow {
+    transform: translateX(10px) scale(1.2);
 }
 
 .countdown-wrapper {
