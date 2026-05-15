@@ -18,7 +18,7 @@ function Navbar() {
   }, []);
 
   return (
-    <nav className={scrolled ? 'nav-scrolled' : ''}>
+    <nav className={`navbar-main ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
         <Link to="/" className="nav-logo">
           <img src="/img/logo.png" alt="Bajo Mundo Hub" className="logo-base" />
