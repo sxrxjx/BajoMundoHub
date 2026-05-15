@@ -3515,15 +3515,19 @@ nav.scrolled {
 
 .gallery-mosaic {
   display: grid;
-  grid-template-columns: 1.5fr 1fr; /* Izquierda más ancha */
-  grid-template-rows: repeat(3, 55px); /* Estirado de 48px a 55px */
-  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr 1.5fr; /* 2 pequeñas y 1 ancha */
+  grid-template-rows: repeat(2, 80px);
+  gap: 0.6rem;
   flex-grow: 1;
 }
 
-.mos-1 {
-    grid-row: span 3; /* Ocupa todo el alto a la izquierda */
-}
+/* 2 Verticales a la izquierda */
+.mos-1 { grid-row: span 2; }
+.mos-2 { grid-row: span 2; }
+
+/* 2 Horizontales a la derecha */
+.mos-3 { grid-column: span 1; }
+.mos-4 { grid-column: span 1; }
 
 .gallery-mosaic img {
   width: 100%;
