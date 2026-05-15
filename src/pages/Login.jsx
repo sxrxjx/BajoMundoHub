@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { 
   signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider 
+  createUserWithEmailAndPassword 
 } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('usuario'); // Default role
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -24,36 +24,43 @@ function Login() {
 
     try {
       if (isLogin) {
-        // Iniciar Sesión
-        await signInWithEmailAndPassword(auth, email, password);
+        // LOGIN
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        // Obtener el rol de Firestore
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          // Redirigir según el rol
+          if (userData.role === 'artista') navigate('/dashboard-artista');
+          else if (userData.role === 'empresa') navigate('/dashboard-empresa');
+          else navigate('/');
+        } else {
+          navigate('/');
+        }
       } else {
-        // Registrarse
-        await createUserWithEmailAndPassword(auth, email, password);
+        // REGISTRO
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Guardar el rol en Firestore
+        await setDoc(doc(db, 'users', user.uid), {
+          email: email,
+          role: role,
+          createdAt: new Date().toISOString()
+        });
+
+        // Redirigir según el rol elegido
+        if (role === 'artista') navigate('/dashboard-artista');
+        else if (role === 'empresa') navigate('/dashboard-empresa');
+        else navigate('/');
       }
-      navigate('/'); // Redirigir a la home tras éxito
     } catch (err) {
       console.error(err);
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-        setError('Email o contraseña incorrectos.');
-      } else if (err.code === 'auth/email-already-in-use') {
-        setError('Este email ya está registrado.');
-      } else if (err.code === 'auth/weak-password') {
-        setError('La contraseña debe tener al menos 6 caracteres.');
-      } else {
-        setError('Ha ocurrido un error. Inténtalo de nuevo.');
-      }
+      setError('Error en la autenticación. Revisa tus datos.');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-      navigate('/');
-    } catch (err) {
-      setError('Error al conectar con Google.');
     }
   };
 
@@ -70,83 +77,58 @@ function Login() {
         <div className="login-header">
           <img src="/img/logo.png" alt="Bajo Mundo" className="login-logo" />
           <h2 className="login-welcome">
-            {isLogin ? 'BIENVENIDO DE NUEVO' : 'ÚNETE AL MOVIMIENTO'}
+            {isLogin ? 'BIENVENIDO' : 'CREA TU CUENTA'}
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            {isLogin ? 'Entra y conecta con el flow' : 'Crea tu cuenta de artista o fan'}
-          </p>
         </div>
 
         <div className="login-tabs">
-          <button 
-            className={`login-tab ${isLogin ? 'active' : ''}`}
-            onClick={() => setIsLogin(true)}
-          >
-            ENTRAR
-          </button>
-          <button 
-            className={`login-tab ${!isLogin ? 'active' : ''}`}
-            onClick={() => setIsLogin(false)}
-          >
-            REGISTRO
-          </button>
+          <button className={`login-tab ${isLogin ? 'active' : ''}`} onClick={() => setIsLogin(true)}>ENTRAR</button>
+          <button className={`login-tab ${!isLogin ? 'active' : ''}`} onClick={() => setIsLogin(false)}>REGISTRO</button>
         </div>
 
-        {error && <div className="login-error" style={{ color: 'var(--primary)', marginBottom: '1rem', textAlign: 'center', fontWeight: 'bold' }}>{error}</div>}
+        {!isLogin && (
+          <div className="role-selector" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
+            {['usuario', 'artista', 'empresa'].map((r) => (
+              <button
+                key={r}
+                type="button"
+                onClick={() => setRole(r)}
+                style={{
+                  flex: 1,
+                  padding: '0.6rem',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  background: role === r ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
+                  color: 'white',
+                  fontSize: '0.7rem',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  transition: '0.3s'
+                }}
+              >
+                {r}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {error && <div style={{ color: 'var(--primary)', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>
-            <input 
-              type="email" 
-              placeholder="tu@email.com" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required 
-            />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
           <div className="form-group">
             <label>Contraseña</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required 
-            />
-          </div>
-
-          <div className="form-footer">
-            <label className="remember-me">
-              <input type="checkbox" /> Recordarme
-            </label>
-            <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
 
           <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
-            {loading ? 'CARGANDO...' : (isLogin ? 'INICIAR SESIÓN' : 'CREAR CUENTA')}
+            {loading ? 'CARGANDO...' : (isLogin ? 'ENTRAR' : 'CONTINUAR')}
           </button>
         </form>
-
-        <div className="social-divider">
-          <span className="divider-line"></span>
-          <span className="divider-text">O CONTINÚA CON</span>
-        </div>
-
-        <div className="social-login">
-          <button className="social-btn" onClick={handleGoogleLogin}>GOOGLE</button>
-        </div>
-
-        <p className="login-footer">
-          {isLogin ? '¿No tienes cuenta?' : '¿Ya eres del Bajo Mundo?'}
-          <span 
-            className="link-primary-bold" 
-            style={{ cursor: 'pointer' }}
-            onClick={() => setIsLogin(!isLogin)}
-          >
-            {isLogin ? 'REGÍSTRATE' : 'ENTRA AQUÍ'}
-          </span>
-        </p>
       </div>
     </div>
   );
