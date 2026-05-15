@@ -1,3 +1,5 @@
+import Particles from '../components/Particles';
+
 function Colabs() {
   const projects = [
     {
@@ -19,7 +21,7 @@ function Colabs() {
   return (
     <div className="colabs-page">
       <header className="colab-hero">
-        <div className="particles"></div>
+        <Particles />
         <div className="container">
           <div className="colab-hero-sign">
             <h1 className="colab-hero-text">COLABS</h1>

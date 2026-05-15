@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import Particles from '../components/Particles';
 
 function Eventos() {
   const [activeYear, setActiveYear] = useState('2024');
+  const [currentDate, setCurrentDate] = useState(new Date(2025, 0, 1)); // Enero 2025
 
   const events = {
     '2023': [
@@ -19,10 +21,43 @@ function Eventos() {
     ]
   };
 
+  const marchEvents = [10, 25]; // Días con evento en el calendario de ejemplo
+
+  const renderCalendar = () => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    // Ajustar para que el primer día sea Lunes (0) en lugar de Domingo
+    const startingDay = firstDay === 0 ? 6 : firstDay - 1;
+    
+    const days = [];
+    // Espacios en blanco
+    for (let i = 0; i < startingDay; i++) {
+      days.push(<span key={`empty-${i}`} className="empty"></span>);
+    }
+    // Días del mes
+    for (let i = 1; i <= daysInMonth; i++) {
+      const isEvent = marchEvents.includes(i);
+      days.push(
+        <span key={i} className={isEvent ? 'has-event' : ''}>
+          {i}
+        </span>
+      );
+    }
+    return days;
+  };
+
+  const nextMonth = () => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)));
+  const prevMonth = () => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
+
+  const monthNames = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+
   return (
     <div className="eventos-page">
       <header className="event-hero">
-        <div className="particles"></div>
+        <Particles />
         <div className="container">
           <div className="event-logo-sign">
             <h1 className="event-logo-text">EVENTOS</h1>
@@ -56,16 +91,15 @@ function Eventos() {
             </div>
             
             <div className="calendar-container">
-              {/* Calendar component would go here */}
               <div className="calendar-widget">
                 <div className="calendar-header">
-                   <span>MARZO 2026</span>
+                   <button className="calendar-nav-btn" onClick={prevMonth} style={{transform: 'rotate(180deg)'}}>&#10140;</button>
+                   <span>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</span>
+                   <button className="calendar-nav-btn" onClick={nextMonth}>&#10140;</button>
                 </div>
                 <div className="calendar-days">
-                   <span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span><span>Do</span>
-                   {Array.from({length: 31}).map((_, i) => (
-                     <span key={i} className={(i+1 === 10 || i+1 === 25) ? 'has-event' : ''}>{i + 1}</span>
-                   ))}
+                   <span className="day-label">Lu</span><span className="day-label">Ma</span><span className="day-label">Mi</span><span className="day-label">Ju</span><span className="day-label">Vi</span><span className="day-label">Sa</span><span className="day-label">Do</span>
+                   {renderCalendar()}
                 </div>
               </div>
             </div>

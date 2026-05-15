@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Particles from '../components/Particles';
 
 function Home() {
   const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
@@ -30,6 +31,7 @@ function Home() {
   return (
     <div className="home-page">
       <header className="hero">
+        <Particles />
         <img src="/img/fondo-platano.png" alt="Platano" className="hanging-platano" />
         <img src="/img/fondo-bolsa.png" alt="Bolsa" className="hanging-bolsa" />
 

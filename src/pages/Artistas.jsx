@@ -1,3 +1,5 @@
+import Particles from '../components/Particles';
+
 function Artistas() {
   const residents = [
     {
@@ -27,7 +29,7 @@ function Artistas() {
   return (
     <div className="artistas-page">
       <header className="artist-hero">
-        <div className="particles"></div>
+        <Particles />
         <div className="container">
           <div className="artist-hero-sign">
             <h1 className="artist-hero-text">ARTISTAS</h1>

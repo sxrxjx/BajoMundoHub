@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
+import Particles from '../components/Particles';
 
 function Comunidad() {
   return (
     <div className="comunidad-page">
       <header className="comunidad-hero">
-        <div className="particles"></div>
+        <Particles />
         <div className="container">
           <div className="comunidad-hero-sign">
             <h1 className="comunidad-hero-text">COMUNIDAD</h1>

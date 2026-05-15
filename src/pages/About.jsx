@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Particles from '../components/Particles';
 
 function About() {
   const [selectedLetter, setSelectedLetter] = useState('A');
@@ -20,7 +21,7 @@ function About() {
   return (
     <div className="about-page">
       <header className="about-hero">
-        <div className="particles"></div>
+        <Particles />
         <div className="container">
           <div className="about-hero-sign">
             <h1 className="about-hero-text">ABOUT</h1>
