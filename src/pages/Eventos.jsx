@@ -4,39 +4,18 @@ import Particles from '../components/Particles';
 function Eventos() {
   const [activeYear, setActiveYear] = useState('2024');
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [hoveredEvent, setHoveredEvent] = useState(null);
+  const [hoveredDay, setHoveredDay] = useState(null);
 
   const today = new Date();
 
-  // Datos de los próximos eventos para el calendario
-  const upcomingEvents = [
-    { 
-      day: 10, 
-      month: today.getMonth(), 
-      year: today.getFullYear(), 
-      title: "Bajo Mundo x Planta Baja", 
-      location: "Granada, ES",
-      img: "/img/prox-1.png"
-    },
-    { 
-      day: 25, 
-      month: today.getMonth(), 
-      year: today.getFullYear(), 
-      title: "Bajo Mundo Intenso", 
-      location: "Sala G10",
-      img: "/img/prox-2.png"
-    },
-    { 
-      day: 5, 
-      month: (today.getMonth() + 1) % 12, 
-      year: today.getMonth() === 11 ? today.getFullYear() + 1 : today.getFullYear(), 
-      title: "Beach Edition", 
-      location: "Almería, ES",
-      img: "/img/past-event-1.png"
-    }
-  ];
+  // Datos de los próximos eventos (extraídos de tu scripts.js original)
+  const eventsData = {
+    10: { title: "Bajo Mundo x Planta", info: "Vicky + Bleggg", img: "/img/prox-1.png" },
+    21: { title: "Edición Intensa", info: "Secret Lineup", img: "/img/prox-2.png" },
+    28: { title: "Networking DJ", info: "Terraza G10", img: "/img/prox-2.png" }
+  };
 
-  const events = {
+  const pastEvents = {
     '2023': [
       { img: '/img/past-event-4.png', day: '15', month: 'Enero', year: '2023', dayName: 'Domingo' },
       { img: '/img/past-event-1.png', day: '20', month: 'Mayo', year: '2023', dayName: 'Lunes', primary: true }
@@ -61,21 +40,29 @@ function Eventos() {
     
     const days = [];
     for (let i = 0; i < startingDay; i++) {
-      days.push(<span key={`empty-${i}`} className="empty"></span>);
+      days.push(<span key={`empty-${i}`} className="calendar-date muted"></span>);
     }
 
     for (let i = 1; i <= daysInMonth; i++) {
-      const eventInfo = upcomingEvents.find(e => e.day === i && e.month === month && e.year === year);
+      const eventInfo = (month === today.getMonth() && year === today.getFullYear()) ? eventsData[i] : null;
       const isToday = i === today.getDate() && month === today.getMonth() && year === today.getFullYear();
       
       days.push(
         <span 
           key={i} 
-          className={`${eventInfo ? 'has-event' : ''} ${isToday ? 'is-today' : ''}`}
-          onMouseEnter={() => eventInfo && setHoveredEvent(eventInfo)}
-          onMouseLeave={() => setHoveredEvent(null)}
+          className={`calendar-date ${eventInfo ? 'has-event' : ''} ${isToday ? 'is-today active' : ''}`}
+          style={{ position: 'relative' }}
+          onMouseEnter={() => setHoveredDay(i)}
+          onMouseLeave={() => setHoveredDay(null)}
         >
           {i}
+          {eventInfo && hoveredDay === i && (
+            <div className="calendar-tooltip" style={{ display: 'block', bottom: '120%', left: '50%', transform: 'translateX(-50%)', zIndex: 9999 }}>
+              <img src={eventInfo.img} alt="Event" />
+              <h4>{eventInfo.title}</h4>
+              <p>{eventInfo.info}</p>
+            </div>
+          )}
         </span>
       );
     }
@@ -125,13 +112,6 @@ function Eventos() {
             
             <div className="calendar-container">
               <div className="calendar-widget">
-                {hoveredEvent && (
-                  <div className="calendar-tooltip" style={{ display: 'block', top: '-140px', left: '50%', transform: 'translateX(-50%)' }}>
-                    <img src={hoveredEvent.img} alt={hoveredEvent.title} />
-                    <h4>{hoveredEvent.title}</h4>
-                    <p>{hoveredEvent.location}</p>
-                  </div>
-                )}
                 <div className="calendar-header">
                    <button className="calendar-nav-btn" onClick={prevMonth} style={{transform: 'rotate(180deg)'}}>&#10140;</button>
                    <span>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</span>
@@ -163,7 +143,7 @@ function Eventos() {
           </div>
 
           <div className="past-events-grid">
-            {events[activeYear].map((event, index) => (
+            {pastEvents[activeYear].map((event, index) => (
               <div className="past-event-card" key={index}>
                 <img src={event.img} alt="Evento Pasado" />
                 <div className="past-event-overlay">
