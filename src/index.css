@@ -3049,3 +3049,16 @@ nav.scrolled {
   border-radius: 50%;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
+
+.has-event {
+  border: 2px solid white !important;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.has-event:hover {
+  background: var(--lemon) !important;
+  color: black !important;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
