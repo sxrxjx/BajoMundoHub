@@ -27,6 +27,7 @@ function Comunidad() {
                 <p>Reggaetonero clásico</p>
               </div>
               <div className="podium-card gold">
+                <Particles mode="burst" color="rgba(251, 255, 0, 0.5)" />
                 <div className="winner-particles"></div>
                 <div className="podium-badge">1º</div>
                 <img src="/img/perfil-1.png" alt="VICKY" />

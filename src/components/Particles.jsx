@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-function Particles() {
+function Particles({ mode = 'float', color = 'rgba(255, 59, 48, 0.5)' }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -11,8 +11,8 @@ function Particles() {
     let animationFrameId;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      canvas.width = canvas.parentElement.offsetWidth;
+      canvas.height = canvas.parentElement.offsetHeight;
     };
 
     window.addEventListener('resize', resize);
@@ -24,32 +24,52 @@ function Particles() {
       }
 
       reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        if (mode === 'burst') {
+          this.x = canvas.width / 2;
+          this.y = canvas.height / 2;
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 2 + 0.5;
+          this.speedX = Math.cos(angle) * speed;
+          this.speedY = Math.sin(angle) * speed;
+        } else {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.speedX = Math.random() * 1 - 0.5;
+          this.speedY = Math.random() * 1 - 0.5;
+        }
         this.size = Math.random() * 2 + 1;
-        this.speedX = Math.random() * 1 - 0.5;
-        this.speedY = Math.random() * 1 - 0.5;
         this.opacity = Math.random() * 0.5 + 0.2;
+        this.life = 0;
+        this.maxLife = Math.random() * 100 + 50;
       }
 
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
+        this.life++;
 
-        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-          this.reset();
+        if (mode === 'burst') {
+          this.opacity -= 0.005;
+          if (this.life > this.maxLife || this.opacity <= 0) {
+            this.reset();
+          }
+        } else {
+          if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+            this.reset();
+          }
         }
       }
 
       draw() {
-        ctx.fillStyle = `rgba(255, 59, 48, ${this.opacity})`;
+        ctx.fillStyle = color.replace('0.5', this.opacity.toString());
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    for (let i = 0; i < 50; i++) {
+    const count = mode === 'burst' ? 30 : 50;
+    for (let i = 0; i < count; i++) {
       particles.push(new Particle());
     }
 
@@ -68,13 +88,21 @@ function Particles() {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [mode, color]);
 
   return (
     <canvas 
       ref={canvasRef} 
       className="particles-canvas" 
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }}
+      style={{ 
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        width: '100%', 
+        height: '100%', 
+        pointerEvents: 'none', 
+        zIndex: 1 
+      }}
     />
   );
 }
