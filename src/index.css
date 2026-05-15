@@ -3366,10 +3366,14 @@ nav.scrolled {
     transform: translateX(5px);
 }
 
+.networking-box .widget-header {
+    margin-bottom: 0.5rem; /* Reducido drásticamente */
+}
+
 .widget-desc {
     font-family: "Bungee", cursive;
-    font-size: 0.8rem; /* Un pelín más pequeño */
-    margin-bottom: 0.8rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem; /* Reducido de 0.8rem */
     color: #1a0a04;
     letter-spacing: 0.5px;
 }
@@ -3377,7 +3381,7 @@ nav.scrolled {
 .connections-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem; /* Reducido de 0.8rem */
+    gap: 0.6rem; /* Un pelín más de espacio entre ellas */
     flex-grow: 1;
     overflow-x: hidden;
 }
@@ -3385,9 +3389,9 @@ nav.scrolled {
 .connection-item {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 1rem;
   background: white;
-  padding: 0.5rem 0.8rem; /* Reducido de 0.8rem 1rem */
+  padding: 0.7rem 1rem; /* Aumentado para que se vean más grandes */
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   transition: 0.3s;
@@ -3399,8 +3403,8 @@ nav.scrolled {
 }
 
 .connection-item img {
-  width: 35px; /* Reducido de 45px */
-  height: 35px;
+  width: 40px; /* Aumentado de 35px */
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 1.5px solid var(--lemon);
