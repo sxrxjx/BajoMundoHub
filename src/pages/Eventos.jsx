@@ -3,9 +3,38 @@ import Particles from '../components/Particles';
 
 function Eventos() {
   const [activeYear, setActiveYear] = useState('2024');
-  const [currentDate, setCurrentDate] = useState(new Date()); // Fecha de hoy por defecto
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [hoveredEvent, setHoveredEvent] = useState(null);
 
   const today = new Date();
+
+  // Datos de los próximos eventos para el calendario
+  const upcomingEvents = [
+    { 
+      day: 10, 
+      month: today.getMonth(), 
+      year: today.getFullYear(), 
+      title: "Bajo Mundo x Planta Baja", 
+      location: "Granada, ES",
+      img: "/img/prox-1.png"
+    },
+    { 
+      day: 25, 
+      month: today.getMonth(), 
+      year: today.getFullYear(), 
+      title: "Bajo Mundo Intenso", 
+      location: "Sala G10",
+      img: "/img/prox-2.png"
+    },
+    { 
+      day: 5, 
+      month: (today.getMonth() + 1) % 12, 
+      year: today.getMonth() === 11 ? today.getFullYear() + 1 : today.getFullYear(), 
+      title: "Beach Edition", 
+      location: "Almería, ES",
+      img: "/img/past-event-1.png"
+    }
+  ];
 
   const events = {
     '2023': [
@@ -23,29 +52,29 @@ function Eventos() {
     ]
   };
 
-  const marchEvents = [10, 25]; // Días con evento en el calendario de ejemplo
-
   const renderCalendar = () => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    
-    // Ajustar para que el primer día sea Lunes (0) en lugar de Domingo
     const startingDay = firstDay === 0 ? 6 : firstDay - 1;
     
     const days = [];
-    // Espacios en blanco
     for (let i = 0; i < startingDay; i++) {
       days.push(<span key={`empty-${i}`} className="empty"></span>);
     }
-    // Días del mes
+
     for (let i = 1; i <= daysInMonth; i++) {
-      const isEvent = marchEvents.includes(i) && month === 2; // Solo para el ejemplo de Marzo
+      const eventInfo = upcomingEvents.find(e => e.day === i && e.month === month && e.year === year);
       const isToday = i === today.getDate() && month === today.getMonth() && year === today.getFullYear();
       
       days.push(
-        <span key={i} className={`${isEvent ? 'has-event' : ''} ${isToday ? 'is-today' : ''}`}>
+        <span 
+          key={i} 
+          className={`${eventInfo ? 'has-event' : ''} ${isToday ? 'is-today' : ''}`}
+          onMouseEnter={() => eventInfo && setHoveredEvent(eventInfo)}
+          onMouseLeave={() => setHoveredEvent(null)}
+        >
           {i}
         </span>
       );
@@ -53,8 +82,8 @@ function Eventos() {
     return days;
   };
 
-  const nextMonth = () => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)));
-  const prevMonth = () => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)));
+  const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
 
   const monthNames = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
 
@@ -96,6 +125,13 @@ function Eventos() {
             
             <div className="calendar-container">
               <div className="calendar-widget">
+                {hoveredEvent && (
+                  <div className="calendar-tooltip" style={{ display: 'block', top: '-140px', left: '50%', transform: 'translateX(-50%)' }}>
+                    <img src={hoveredEvent.img} alt={hoveredEvent.title} />
+                    <h4>{hoveredEvent.title}</h4>
+                    <p>{hoveredEvent.location}</p>
+                  </div>
+                )}
                 <div className="calendar-header">
                    <button className="calendar-nav-btn" onClick={prevMonth} style={{transform: 'rotate(180deg)'}}>&#10140;</button>
                    <span>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</span>
