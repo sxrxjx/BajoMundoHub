@@ -3096,17 +3096,13 @@ nav.scrolled {
 }
 
 .dashboard-sidebar {
-  width: 300px;
   background: #1a0a04;
   padding: 4rem 1.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Reparte el espacio */
+  justify-content: space-between;
   border-right: 1px solid rgba(255,255,255,0.1);
-  position: fixed;
-  height: 100vh; /* Alto total */
-  top: 0;
-  left: 0;
+  min-width: 300px; /* Mantengo un ancho mínimo para que no se colapse */
   z-index: 100;
 }
 
@@ -3201,8 +3197,8 @@ nav.scrolled {
 
 .dashboard-main {
   flex: 1;
-  margin-left: 280px;
   padding: 3rem;
+  overflow-y: auto;
 }
 
 .dashboard-grid {
