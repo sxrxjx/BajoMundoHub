@@ -3209,7 +3209,7 @@ nav.scrolled {
 .dashboard-main {
   flex: 1;
   margin-left: 300px;
-  padding: 1.5rem; /* Reducido de 2rem */
+  padding: 2rem;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -3217,14 +3217,14 @@ nav.scrolled {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  grid-template-rows: 1.2fr 0.8fr 1fr; /* Reparto milimétrico */
+  grid-template-columns: 1fr 1.3fr;
+  grid-template-rows: 1.2fr 0.8fr 1.2fr;
   grid-template-areas: 
     "calendar assistance"
     "calendar rewards"
     "networking gallery";
-  gap: 1rem; /* Reducido de 1.2rem */
-  height: calc(100vh - 3rem); /* Ajuste exacto al padding del main */
+  gap: 1.2rem;
+  height: 100%;
 }
 
 .calendar-widget-box { grid-area: calendar; background: #000; color: white; }
@@ -3240,10 +3240,14 @@ nav.scrolled {
     margin-bottom: 0.5rem;
 }
 
+.gallery-mosaic img {
+    height: 80px; /* Un poco más pequeñas */
+}
+
 .widget-box {
   background: #df9e7d;
   border-radius: 20px;
-  padding: 1.2rem; /* Reducido para ganar espacio */
+  padding: 1.5rem;
   color: black;
   position: relative;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -3262,7 +3266,7 @@ nav.scrolled {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem; /* Reducido de 1.5 */
+  margin-bottom: 1.5rem;
 }
 
 .widget-header h3 {
@@ -3379,21 +3383,50 @@ nav.scrolled {
   border-radius: 50%;
 }
 
+.rewards-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  flex-grow: 1;
+}
+
 .reward-card {
   display: flex;
-  gap: 1rem;
+  flex-direction: column; /* Vertical */
   background: #111;
   color: white;
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 15px;
-  margin-bottom: 1rem;
+  text-align: center;
+  transition: 0.3s;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.reward-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--lemon);
 }
 
 .reward-card img {
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  height: 80px;
   border-radius: 10px;
   object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.reward-info h4 {
+    font-size: 0.75rem;
+    font-family: "Bungee", cursive;
+    margin-bottom: 0.3rem;
+    color: var(--lemon);
+}
+
+.reward-info p {
+    font-size: 0.65rem;
+    line-height: 1.2;
+    margin-bottom: 0.8rem;
+    opacity: 0.8;
 }
 
 .gallery-mosaic {
@@ -3404,7 +3437,7 @@ nav.scrolled {
 
 .gallery-mosaic img {
   width: 100%;
-  height: 75px;
+  height: 100px;
   object-fit: cover;
   border-radius: 10px;
 }
