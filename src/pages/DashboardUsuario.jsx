@@ -206,7 +206,6 @@ function DashboardUsuario() {
               <img src="/img/2.png" alt="2" className="mos-2" />
               <img src="/img/4.png" alt="3" className="mos-3" />
               <img src="/img/perfil-1.png" alt="4" className="mos-4" />
-              <img src="/img/perfil-2.png" alt="5" className="mos-5" />
             </div>
             <button className="btn-text">MI CONTENIDO <span>&#10140;</span></button>
           </div>
