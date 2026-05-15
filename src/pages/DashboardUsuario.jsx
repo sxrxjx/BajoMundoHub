@@ -6,6 +6,7 @@ import { doc, getDoc } from 'firebase/firestore';
 function DashboardUsuario() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -20,6 +21,24 @@ function DashboardUsuario() {
     });
     return () => unsubscribe();
   }, []);
+
+  // LÓGICA DEL CALENDARIO
+  const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+  const getFirstDayOfMonth = (year, month) => {
+    let day = new Date(year, month, 1).getDay();
+    return day === 0 ? 6 : day - 1; // Ajuste para que empiece en Lunes
+  };
+
+  const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  const daysShort = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"];
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const daysInMonth = getDaysInMonth(year, month);
+  const firstDay = getFirstDayOfMonth(year, month);
+
+  const prevMonth = () => setCurrentDate(new Date(year, month - 1));
+  const nextMonth = () => setCurrentDate(new Date(year, month + 1));
 
   if (loading) return <div className="loading">CARGANDO...</div>;
 
@@ -60,16 +79,34 @@ function DashboardUsuario() {
               <h3>PRÓXIMOS EVENTOS</h3>
               <span className="widget-icon">📅</span>
             </div>
-            <div className="mini-calendar">
-              {/* Aquí irá una versión simplificada del calendario */}
-              <div className="calendar-month">Enero 2025</div>
+            
+            <div className="mini-calendar-container">
+              <div className="calendar-nav">
+                <button onClick={prevMonth}>&lt;</button>
+                <span className="current-month-label">{monthNames[month]} {year}</span>
+                <button onClick={nextMonth}>&gt;</button>
+              </div>
+
+              <div className="calendar-grid-header">
+                {daysShort.map(d => <span key={d}>{d}</span>)}
+              </div>
+
               <div className="calendar-grid-mini">
-                 {/* ... días ... */}
-                 {[...Array(31)].map((_, i) => (
-                   <span key={i} className={`mini-date ${i+1 === 10 ? 'active' : ''} ${i+1 === 21 ? 'has-event' : ''}`}>{i+1}</span>
-                 ))}
+                {[...Array(firstDay)].map((_, i) => <span key={`empty-${i}`} className="empty"></span>)}
+                {[...Array(daysInMonth)].map((_, i) => {
+                  const dayNum = i + 1;
+                  const isToday = dayNum === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
+                  const hasEvent = dayNum === 10 || dayNum === 21 || dayNum === 28;
+                  
+                  return (
+                    <span key={dayNum} className={`mini-date ${isToday ? 'is-today' : ''} ${hasEvent ? 'has-event' : ''}`}>
+                      {dayNum}
+                    </span>
+                  );
+                })}
               </div>
             </div>
+            <button className="btn-text">VER CALENDARIO COMPLETO &#10140;</button>
           </div>
 
           {/* ASISTENCIA */}
