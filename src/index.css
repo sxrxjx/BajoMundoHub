@@ -3001,3 +3001,35 @@ nav.scrolled {
         display: none;
     }
 }
+/* React Specific Styles */
+.particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.hero, .event-hero, .comunidad-hero, .artist-hero, .about-hero, .colab-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.calendar-nav-btn {
+  background: none;
+  border: none;
+  color: var(--lemon);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.day-label {
+  font-weight: bold;
+  color: var(--lemon);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.calendar-days span.empty {
+  visibility: hidden;
+}
