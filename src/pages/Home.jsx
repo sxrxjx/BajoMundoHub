@@ -152,7 +152,7 @@ function Home() {
             </div>
           </div>
 
-          <Link to="/login" className="cta-link">ÚNETE A NUESTRA COMUNIDAD &rarr;</Link>
+          <Link to="/login" className="btn btn-primary btn-hero">ÚNETE A NUESTRA COMUNIDAD &rarr;</Link>
         </div>
       </section>
     </div>
