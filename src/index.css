@@ -3274,32 +3274,60 @@ nav.scrolled {
   font-size: 1.5rem;
 }
 
+.level-indicator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
 .level-bar {
-  height: 40px;
-  background: rgba(0,0,0,0.1);
-  border-radius: 20px;
+  height: 45px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 50px;
   position: relative;
-  overflow: visible;
-  margin: 2rem 0;
+  margin: 2.5rem 0;
+  border: 2px solid rgba(0,0,0,0.05);
 }
 
 .level-progress {
   height: 100%;
-  background: linear-gradient(to right, #ff5e00, #ffbb00);
-  border-radius: 20px;
+  background: linear-gradient(90deg, #ff4d00, #ffcc00);
+  border-radius: 50px;
+  box-shadow: 0 0 15px rgba(255, 77, 0, 0.4);
 }
 
 .level-badge {
   position: absolute;
   top: 50%;
-  right: 20%;
+  right: 15%;
   transform: translate(50%, -50%);
   background: #ff0000;
   color: white;
   font-family: "Bungee", cursive;
-  padding: 0.5rem 1rem;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-  font-size: 1.2rem;
+  padding: 0.8rem 1.2rem;
+  font-size: 1.4rem;
+  clip-path: polygon(100% 50%, 75% 100%, 25% 100%, 0% 50%, 25% 0%, 75% 0%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+  line-height: 1;
+}
+
+.level-status {
+  font-family: "Bungee", cursive;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  color: black;
+}
+
+.level-indicator p {
+  font-size: 0.9rem;
+  color: rgba(0,0,0,0.6);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
 }
 
 .connection-item {
