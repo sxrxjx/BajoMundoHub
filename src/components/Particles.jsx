@@ -26,7 +26,7 @@ function Particles({ mode = 'float', color = 'rgba(255, 59, 48, 0.5)' }) {
       reset() {
         if (mode === 'burst') {
           this.x = canvas.width / 2;
-          this.y = canvas.height / 2;
+          this.y = canvas.height / 3.5;
           const angle = Math.random() * Math.PI * 2;
           const speed = Math.random() * 2 + 0.5;
           this.speedX = Math.cos(angle) * speed;
