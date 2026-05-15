@@ -3512,15 +3512,31 @@ nav.scrolled {
 .gallery-mosaic {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
+  grid-template-rows: repeat(2, 65px); /* Alturas controladas para que quepa todo */
+  gap: 0.6rem;
+  flex-grow: 1;
 }
 
 .gallery-mosaic img {
   width: 100%;
-  height: 100px;
+  height: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 12px;
+  transition: 0.3s;
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.1);
 }
+
+.gallery-mosaic img:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Algunas fotos más grandes que otras */
+.mos-1 { grid-column: span 2; }
+.mos-2 { grid-row: span 2; }
+.mos-6 { grid-column: span 2; }
 
 .btn-widget {
   background: black;
