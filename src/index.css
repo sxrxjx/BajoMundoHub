@@ -3511,10 +3511,14 @@ nav.scrolled {
 
 .gallery-mosaic {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 65px);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 75px 45px; /* Hero arriba, minis abajo */
   gap: 0.6rem;
   flex-grow: 1;
+}
+
+.mos-1 {
+    grid-column: span 3; /* Ocupa todo el ancho arriba */
 }
 
 .gallery-mosaic img {
