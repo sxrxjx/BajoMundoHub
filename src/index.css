@@ -3286,7 +3286,7 @@ nav.scrolled {
   background: rgba(0,0,0,0.15);
   border-radius: 50px;
   position: relative;
-  margin: 1.5rem 0;
+  margin: 0.5rem 0 1.5rem 0; /* Menos espacio arriba, mantengo abajo */
   border: 2px solid rgba(0,0,0,0.05);
 }
 
