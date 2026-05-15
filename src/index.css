@@ -3218,7 +3218,7 @@ nav.scrolled {
 .dashboard-grid {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
-  grid-template-rows: 1fr 1fr 1.2fr;
+  grid-template-rows: 1.2fr 0.8fr 1.2fr;
   grid-template-areas: 
     "calendar assistance"
     "calendar rewards"
@@ -3286,7 +3286,7 @@ nav.scrolled {
   background: rgba(0,0,0,0.15);
   border-radius: 50px;
   position: relative;
-  margin: 2.5rem 0;
+  margin: 1.5rem 0;
   border: 2px solid rgba(0,0,0,0.05);
 }
 
@@ -3317,16 +3317,16 @@ nav.scrolled {
 
 .level-status {
   font-family: "Bungee", cursive;
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
   line-height: 1;
   color: black;
 }
 
 .level-indicator p {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: rgba(0,0,0,0.6);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-weight: 600;
 }
 
