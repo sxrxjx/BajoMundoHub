@@ -657,7 +657,7 @@ footer {
 
 .hanging-platano {
     position: absolute;
-    top: 300px;
+    top: 450px;
     right: -50px;
     /* Adjusted for full-width section */
     width: clamp(400px, 50vw, 800px);
@@ -671,7 +671,7 @@ footer {
 
 .hanging-bolsa {
     position: absolute;
-    top: 550px;
+    top: 700px;
     /* Moved up */
     left: -70px;
     /* Adjusted for full-width section */
