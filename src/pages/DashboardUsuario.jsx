@@ -139,14 +139,15 @@ function DashboardUsuario() {
             </div>
             <div className="level-indicator">
               <div className="level-bar">
-                <div className="level-progress" style={{width: '70%'}}>
+                <div className="level-progress" style={{width: '70%'}}></div>
+                <div className="level-badge" style={{left: '70%'}}>
+                  70
                   <span className="particle p1"></span>
                   <span className="particle p2"></span>
                   <span className="particle p3"></span>
                   <span className="particle p4"></span>
                   <span className="particle p5"></span>
                 </div>
-                <div className="level-badge" style={{left: '70%'}}>Lv 10</div>
               </div>
               <h4 className="level-status">¡ESO ESTÁ PELUCHE!</h4>
               <p>Estás on fire, no te pierdes ni una, ¡qué bacano!</p>
