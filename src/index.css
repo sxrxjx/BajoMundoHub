@@ -3379,6 +3379,7 @@ nav.scrolled {
     flex-direction: column;
     gap: 0.5rem; /* Reducido de 0.8rem */
     flex-grow: 1;
+    overflow-x: hidden;
 }
 
 .connection-item {
