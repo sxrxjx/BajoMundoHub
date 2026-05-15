@@ -3033,3 +3033,11 @@ nav.scrolled {
 .calendar-days span.empty {
   visibility: hidden;
 }
+
+.nav-scrolled {
+  background: rgba(10, 10, 10, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 0 !important;
+}

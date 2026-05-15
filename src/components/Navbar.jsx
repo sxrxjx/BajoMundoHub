@@ -1,8 +1,24 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <nav>
+    <nav className={scrolled ? 'nav-scrolled' : ''}>
       <div className="nav-container">
         <Link to="/" className="nav-logo">
           <img src="/img/logo.png" alt="Bajo Mundo Hub" className="logo-base" />
