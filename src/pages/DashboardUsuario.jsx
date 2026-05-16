@@ -17,8 +17,35 @@ function DashboardUsuario() {
   const [allUsers, setAllUsers] = useState([]);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAttendanceModal, setShowAttendanceModal] = useState(false);
+  const [attendanceCode, setAttendanceCode] = useState('');
+  const [attendanceMessage, setAttendanceMessage] = useState('');
+  const [showRewardsModal, setShowRewardsModal] = useState(false);
   
   const navigate = useNavigate();
+
+  const rewardsList = [
+    { id: 'pase_vip', title: 'PASE GRATIS VIP', desc: 'Pasa gratis a cualquier evento antes de la 1:00 AM.', cost: 150, img: '/img/prox-1.png' },
+    { id: 'codigo_50', title: 'CÓDIGO 50% DTO', desc: 'Mitad de precio en tu próxima compra de entradas.', cost: 200, img: '/img/prox-2.png' },
+    { id: 'copa_gratis', title: 'COPA GRATIS', desc: 'Invita la casa. Válido en todas las barras principales.', cost: 300, img: '/img/1.png' },
+    { id: 'merch_camiseta', title: 'CAMISETA BAJO MUNDO', desc: 'Llévate el flow a tu casa. Tallas S a XL disponibles.', cost: 1000, img: '/img/2.png' }
+  ];
+
+  const handleRedeemReward = async (reward) => {
+    const userXp = userData?.xp || 0;
+    if (userXp >= reward.cost) {
+      try {
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        await updateDoc(userRef, {
+          xp: userXp - reward.cost
+        });
+        alert(`¡Has canjeado con éxito: ${reward.title}!`);
+      } catch (e) {
+        console.error('Error canjeando:', e);
+        alert('Error al canjear la recompensa.');
+      }
+    }
+  };
 
   // Datos mock de eventos
   const events = {
@@ -272,9 +299,9 @@ function DashboardUsuario() {
             </div>
             <div className="level-indicator">
               <div className="level-bar">
-                <div className="level-progress" style={{ width: '70%' }}></div>
-                <div className="level-badge" style={{ left: '70%' }}>
-                  lvl 10
+                <div className="level-progress" style={{ width: `${(userData?.xp || 0) % 100}%`, transition: 'width 1s ease-out' }}></div>
+                <div className="level-badge" style={{ left: `${(userData?.xp || 0) % 100}%`, transition: 'left 1s ease-out' }}>
+                  lvl {Math.floor((userData?.xp || 0) / 100) + 1}
                   <span className="particle p1"></span>
                   <span className="particle p2"></span>
                   <span className="particle p3"></span>
@@ -284,7 +311,7 @@ function DashboardUsuario() {
               </div>
               <h4 className="level-status">¡ESO ESTÁ PELUCHE!</h4>
               <p>Estás on fire, no te pierdes ni una, ¡qué bacano!</p>
-              <button className="btn-assistance">FORMULARIO DE ASISTENCIA <span>&#10140;</span></button>
+              <button className="btn-assistance" onClick={() => setShowAttendanceModal(true)}>FORMULARIO DE ASISTENCIA <span>&#10140;</span></button>
             </div>
           </div>
 
@@ -331,29 +358,45 @@ function DashboardUsuario() {
 
           {/* RECOMPENSAS */}
           <div className="widget-box rewards-box">
-            <div className="widget-header">
-              <h3>RECOMPENSAS</h3>
+            <div className="widget-header" style={{ alignItems: 'center' }}>
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
+                RECOMPENSAS
+                <span style={{ background: 'rgba(0,0,0,0.3)', color: 'var(--lemon)', padding: '0.2rem 0.6rem', borderRadius: '8px', fontSize: '0.75rem', border: '1px solid var(--lemon)' }}>
+                  {userData?.xp || 0} XP
+                </span>
+              </h3>
               <span className="widget-icon">🔖</span>
             </div>
             <div className="rewards-list">
-              <div className="reward-card">
-                <img src="/img/prox-1.png" alt="Pase" />
-                <div className="reward-info">
-                  <h4>PASE GRATIS</h4>
-                  <p>Pasa gratis hasta las 1:00</p>
-                  <button className="btn-mini">DESCARGAR INVITACIÓN &#10140;</button>
-                </div>
-              </div>
-              <div className="reward-card">
-                <img src="/img/prox-2.png" alt="Código" />
-                <div className="reward-info">
-                  <h4>CÓDIGO DE DESCUENTO</h4>
-                  <p>Canjea este código en tu próxima entrada</p>
-                  <button className="btn-mini">CANJEAR CÓDIGO &#10140;</button>
-                </div>
-              </div>
+              {rewardsList.slice(0, 2).map(reward => {
+                const userXp = userData?.xp || 0;
+                const canAfford = userXp >= reward.cost;
+                return (
+                  <div key={reward.id} className="reward-card" style={{ opacity: canAfford ? 1 : 0.5, filter: canAfford ? 'none' : 'grayscale(100%)' }}>
+                    <img src={reward.img} alt={reward.title} />
+                    <div className="reward-info">
+                      <h4>{reward.title}</h4>
+                      <p>{reward.desc}</p>
+                      <button 
+                        className="btn-mini"
+                        disabled={!canAfford}
+                        onClick={() => handleRedeemReward(reward)}
+                        style={{ 
+                          background: canAfford ? 'var(--lemon)' : '#333', 
+                          color: canAfford ? 'black' : 'gray',
+                          cursor: canAfford ? 'pointer' : 'not-allowed',
+                          border: 'none',
+                          transition: '0.3s'
+                        }}
+                      >
+                        {canAfford ? `CANJEAR (${reward.cost} XP) ➔` : `BLOQUEADO (${reward.cost} XP)`}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <button className="btn-text">TODAS LAS RECOMPENSAS <span>&#10140;</span></button>
+            <button className="btn-text" onClick={() => setShowRewardsModal(true)}>TODAS LAS RECOMPENSAS <span>&#10140;</span></button>
           </div>
 
           {/* MI GALERÍA */}
@@ -362,13 +405,58 @@ function DashboardUsuario() {
               <h3>MI GALERÍA</h3>
               <span className="widget-icon">🖼️</span>
             </div>
-            <div className="gallery-mosaic">
-              <img src="/img/1.png" alt="1" className="mos-1" onClick={() => setSelectedImg("/img/1.png")} />
-              <img src="/img/2.png" alt="2" className="mos-2" onClick={() => setSelectedImg("/img/2.png")} />
-              <img src="/img/4.png" alt="3" className="mos-3" onClick={() => setSelectedImg("/img/4.png")} />
-              <img src="/img/perfil-1.png" alt="4" className="mos-4" onClick={() => setSelectedImg("/img/perfil-1.png")} />
+            <div 
+              className="gallery-mosaic"
+              style={{
+                display: 'grid',
+                gap: '0.6rem',
+                flexGrow: 1,
+                gridTemplateColumns: !userData?.gallery?.length ? '1fr 1fr 1.5fr' :
+                                      userData.gallery.length === 1 ? '1fr' :
+                                      userData.gallery.length === 2 ? '1fr 1fr' :
+                                      userData.gallery.length === 3 ? '1fr 1fr 1fr' :
+                                      '1fr 1fr 1.5fr'
+              }}
+            >
+              {(!userData?.gallery || userData.gallery.length === 0) ? (
+                <div style={{ gridColumn: '1 / -1', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.05)', borderRadius: '12px', border: '1px dashed rgba(0,0,0,0.2)' }}>
+                  <p style={{ fontSize: '0.8rem', opacity: 0.7 }}>Aún no hay fotos.</p>
+                </div>
+              ) : (
+                userData.gallery.slice(0, 4).map((img, i) => {
+                  const len = Math.min(userData.gallery.length, 4);
+                  let gridRow = 'span 1';
+                  let gridCol = 'span 1';
+                  
+                  if (len === 1) {
+                    gridRow = 'span 2';
+                  } else if (len === 2 || len === 3) {
+                    gridRow = 'span 2';
+                  } else if (len >= 4) {
+                    if (i === 0 || i === 1) gridRow = 'span 2';
+                  }
+
+                  return (
+                    <img 
+                      key={i} 
+                      src={img} 
+                      alt={`Gallery ${i+1}`} 
+                      onClick={() => setSelectedImg(img)} 
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: '12px',
+                        cursor: 'pointer',
+                        gridRow,
+                        gridColumn: gridCol
+                      }}
+                    />
+                  );
+                })
+              )}
             </div>
-            <button className="btn-text">MI CONTENIDO <span>&#10140;</span></button>
+            <Link to="/mi-contenido" className="btn-text" style={{ textDecoration: 'none', display: 'inline-block', marginTop: '0.5rem' }}>MI CONTENIDO <span>&#10140;</span></Link>
           </div>
 
         </div>
@@ -382,7 +470,6 @@ function DashboardUsuario() {
             <img src={selectedImg} alt="Enlarged view" />
           </div>
         </div>
-      )}
       )}
 
       {/* MODAL DE NETWORKING */}
@@ -458,6 +545,144 @@ function DashboardUsuario() {
                         </div>
                       </div>
                     );
+                })}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* MODAL DE ASISTENCIA */}
+      <AnimatePresence>
+        {showAttendanceModal && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
+            onClick={() => setShowAttendanceModal(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={e => e.stopPropagation()}
+              style={{ background: '#120804', border: '1px solid var(--lemon)', borderRadius: '20px', width: '100%', maxWidth: '400px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.8), 0 0 20px rgba(223, 255, 0, 0.2)' }}
+            >
+              <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ fontFamily: 'Bungee', color: 'var(--lemon)', margin: 0, fontSize: '1.2rem' }}>
+                  VALIDAR ASISTENCIA
+                </h3>
+                <button onClick={() => setShowAttendanceModal(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', fontSize: '1.5rem', cursor: 'pointer', transition: '0.3s' }}>×</button>
+              </div>
+              <div style={{ padding: '2rem' }}>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>Introduce el código secreto del evento para sumar experiencia a tu nivel del Bajo Mundo.</p>
+                <input 
+                  type="text" 
+                  placeholder="CÓDIGO SECRETO (Ej: DEMBOW24)" 
+                  value={attendanceCode}
+                  onChange={(e) => setAttendanceCode(e.target.value.toUpperCase())}
+                  style={{ width: '100%', padding: '1rem', borderRadius: '10px', border: '2px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: 'white', outline: 'none', fontFamily: 'Bungee', textAlign: 'center', fontSize: '1.2rem', marginBottom: '1rem' }}
+                />
+                {attendanceMessage && (
+                  <p style={{ textAlign: 'center', color: attendanceMessage.includes('Error') ? '#ff5f56' : 'var(--lemon)', fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '1rem' }}>
+                    {attendanceMessage}
+                  </p>
+                )}
+                <button 
+                  onClick={async () => {
+                    const code = attendanceCode.trim();
+                    if (code === 'DEMBOW24' || code === 'BAJOMUNDO') {
+                      if (userData?.redeemedCodes?.includes(code)) {
+                        setAttendanceMessage('Error: Ya has validado este código anteriormente.');
+                        return;
+                      }
+
+                      try {
+                        const userRef = doc(db, 'users', auth.currentUser.uid);
+                        await updateDoc(userRef, {
+                          xp: (userData?.xp || 0) + 50,
+                          redeemedCodes: arrayUnion(code)
+                        });
+                        setAttendanceMessage('¡Asistencia validada! +50 XP sumados.');
+                        setTimeout(() => {
+                          setShowAttendanceModal(false);
+                          setAttendanceMessage('');
+                          setAttendanceCode('');
+                        }, 2000);
+                      } catch (error) {
+                        console.error('Error XP:', error);
+                        setAttendanceMessage('Error sumando experiencia.');
+                      }
+                    } else {
+                      setAttendanceMessage('Error: Código inválido o expirado.');
+                    }
+                  }}
+                  style={{ width: '100%', background: 'var(--lemon)', color: 'black', border: 'none', padding: '1rem', borderRadius: '10px', fontFamily: 'Bungee', cursor: 'pointer', fontSize: '1rem', transition: '0.3s' }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  VERIFICAR CÓDIGO
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* MODAL DE TODAS LAS RECOMPENSAS */}
+      <AnimatePresence>
+        {showRewardsModal && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
+            onClick={() => setShowRewardsModal(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={e => e.stopPropagation()}
+              style={{ background: '#120804', border: '1px solid var(--lemon)', borderRadius: '20px', width: '100%', maxWidth: '600px', maxHeight: '80vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.8), 0 0 20px rgba(223, 255, 0, 0.2)' }}
+            >
+              <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexShrink: 0 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <h3 style={{ fontFamily: 'Bungee', color: 'var(--lemon)', margin: 0, fontSize: '1.5rem' }}>
+                    CATÁLOGO DE RECOMPENSAS
+                  </h3>
+                  <span style={{ fontSize: '1rem', background: 'rgba(223, 255, 0, 0.1)', color: 'var(--lemon)', padding: '0.5rem 1rem', borderRadius: '10px', border: '1px solid rgba(223,255,0,0.5)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontWeight: 'bold' }}>
+                    💎 PUNTOS DISPONIBLES: {userData?.xp || 0} XP
+                  </span>
+                </div>
+                <button onClick={() => setShowRewardsModal(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', fontSize: '1.8rem', cursor: 'pointer', transition: '0.3s' }}>×</button>
+              </div>
+              <div style={{ padding: '1.5rem', overflowY: 'auto', flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {rewardsList.map(reward => {
+                  const userXp = userData?.xp || 0;
+                  const canAfford = userXp >= reward.cost;
+                  return (
+                    <div key={reward.id} className="reward-card" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', opacity: canAfford ? 1 : 0.5, filter: canAfford ? 'none' : 'grayscale(100%)' }}>
+                      <img src={reward.img} alt={reward.title} />
+                      <div className="reward-info">
+                        <h4 style={{ color: 'white' }}>{reward.title}</h4>
+                        <p style={{ color: 'rgba(255,255,255,0.6)' }}>{reward.desc}</p>
+                        <button 
+                          className="btn-mini" 
+                          disabled={!canAfford}
+                          onClick={() => handleRedeemReward(reward)}
+                          style={{ 
+                            background: canAfford ? 'var(--lemon)' : '#333', 
+                            color: canAfford ? 'black' : 'gray',
+                            cursor: canAfford ? 'pointer' : 'not-allowed'
+                          }}
+                        >
+                          {canAfford ? `CANJEAR (${reward.cost} XP) ➔` : `BLOQUEADO (${reward.cost} XP)`}
+                        </button>
+                      </div>
+                    </div>
+                  );
                 })}
               </div>
             </motion.div>

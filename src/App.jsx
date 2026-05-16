@@ -13,13 +13,17 @@ import './index.css';
 
 import Perfil from './pages/Perfil';
 import Mensajes from './pages/Mensajes';
+import MiContenido from './pages/MiContenido';
+import Ajustes from './pages/Ajustes';
 
 // Componente para manejar la visibilidad de los elementos comunes
 function AppContent() {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith('/dashboard') || 
                       location.pathname === '/perfil' || 
-                      location.pathname === '/mensajes';
+                      location.pathname === '/mensajes' ||
+                      location.pathname === '/mi-contenido' ||
+                      location.pathname === '/ajustes';
 
   return (
     <>
@@ -36,6 +40,8 @@ function AppContent() {
           <Route path="/dashboard-usuario" element={<DashboardUsuario />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/mensajes" element={<Mensajes />} />
+          <Route path="/mi-contenido" element={<MiContenido />} />
+          <Route path="/ajustes" element={<Ajustes />} />
         </Routes>
       </main>
       {!isDashboard && <Footer />}
