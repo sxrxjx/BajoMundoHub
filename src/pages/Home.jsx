@@ -39,7 +39,7 @@ function Home() {
           <img src="/img/Banner-Logo.png" alt="Bajo Mundo Hub Logo" className="hero-logo" />
 
           <div className="cta-container">
-            <Link to="/eventos" className="btn btn-primary btn-hero">PRÓXIMOS EVENTOS <span className="btn-arrow">&#10140;</span></Link>
+            <Link to="/eventos" className="btn btn-primary btn-hero">¡Dale Play!</Link>
           </div>
 
           <div className="countdown-container countdown-wrapper">

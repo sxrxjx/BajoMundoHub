@@ -13,7 +13,52 @@ function About() {
       { term: 'Bebecita', def: 'Término cariñoso para referirse a una mujer.' },
       { term: 'Bandidaje', def: 'Actitud rebelde o de calle.' }
     ],
-    // Add more as needed...
+    'C': [
+      { term: 'Capea el Dough', def: 'Referencia a la mítica serie de colaboraciones del rap dominicano.' },
+      { term: 'Chucky', def: 'Estar en modo rebelde, con mucha energía o "ready" para la acción.' },
+      { term: 'Cero Coro', def: 'No querer saber de alguien o cortar toda relación.' }
+    ],
+    'D': [
+      { term: 'Dembow', def: 'El ritmo que nos mueve. Género urbano rey de la República Dominicana.' },
+      { term: 'De lo mío', def: 'Expresión para referirse a un amigo cercano o alguien de confianza.' }
+    ],
+    'E': [
+      { term: 'En alta', def: 'Estar en el mejor momento, con la energía al máximo.' }
+    ],
+    'G': [
+      { term: 'Gatillero', def: 'Alguien que lanza rimas pesadas o tiene un flow agresivo.' }
+    ],
+    'H': [
+      { term: 'Heavy', def: 'Algo que es genial, cool o está muy bien.' }
+    ],
+    'J': [
+      { term: 'Jevito', def: 'Persona que viste con estilo, a la moda urbana.' },
+      { term: 'Jevo/a', def: 'Pareja o persona que te gusta.' }
+    ],
+    'K': [
+      { term: 'Klk', def: '¿Qué lo que? El saludo universal del Bajo Mundo.' }
+    ],
+    'L': [
+      { term: 'La Pampara', def: 'Tener el brillo, el éxito o estar en lo más alto.' }
+    ],
+    'M': [
+      { term: 'Montra', def: 'Persona con un talento o habilidad fuera de lo común.' }
+    ],
+    'P': [
+      { term: 'Pila', def: 'Significa "mucho". Tener pila de energía, pila de gente.' },
+      { term: 'Popi', def: 'Persona de clase alta o que aparenta tener mucho dinero.' }
+    ],
+    'R': [
+      { term: 'Ranqueao', def: 'Alguien con estatus, respeto y trayectoria en la calle.' },
+      { term: 'Rulay', def: 'Estar de fiesta, relajado y pasándola bien.' }
+    ],
+    'T': [
+      { term: 'Tigueraje', def: 'La astucia y sabiduría que solo se aprende en la calle.' },
+      { term: 'Tiguere', def: 'Persona astuta, sagaz y con mundo.' }
+    ],
+    'W': [
+      { term: 'Wawawa', def: 'La esencia del barrio, la gente humilde y auténtica de la calle.' }
+    ]
   };
 
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");

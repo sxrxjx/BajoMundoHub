@@ -11,10 +11,15 @@ import Login from './pages/Login';
 import DashboardUsuario from './pages/DashboardUsuario';
 import './index.css';
 
+import Perfil from './pages/Perfil';
+import Mensajes from './pages/Mensajes';
+
 // Componente para manejar la visibilidad de los elementos comunes
 function AppContent() {
   const location = useLocation();
-  const isDashboard = location.pathname.startsWith('/dashboard');
+  const isDashboard = location.pathname.startsWith('/dashboard') || 
+                      location.pathname === '/perfil' || 
+                      location.pathname === '/mensajes';
 
   return (
     <>
@@ -29,6 +34,8 @@ function AppContent() {
           <Route path="/colabs" element={<Colabs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard-usuario" element={<DashboardUsuario />} />
+          <Route path="/perfil" element={<Perfil />} />
+          <Route path="/mensajes" element={<Mensajes />} />
         </Routes>
       </main>
       {!isDashboard && <Footer />}

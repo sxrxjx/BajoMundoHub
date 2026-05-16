@@ -11,6 +11,8 @@ function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [role, setRole] = useState('usuario'); // Default role
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -47,6 +49,8 @@ function Login() {
         // Guardar el rol en Firestore
         await setDoc(doc(db, 'users', user.uid), {
           email: email,
+          firstName: firstName,
+          lastName: lastName,
           role: role,
           createdAt: new Date().toISOString()
         });
@@ -130,6 +134,28 @@ function Login() {
         {error && <div style={{ color: 'var(--primary)', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <div className="form-row" style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+              <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
+                <label>Nombre</label>
+                <input 
+                  type="text" 
+                  value={firstName} 
+                  onChange={(e) => setFirstName(e.target.value)} 
+                  required={!isLogin} 
+                />
+              </div>
+              <div className="form-group" style={{ flex: 1, marginBottom: 0 }}>
+                <label>Apellidos</label>
+                <input 
+                  type="text" 
+                  value={lastName} 
+                  onChange={(e) => setLastName(e.target.value)} 
+                  required={!isLogin} 
+                />
+              </div>
+            </div>
+          )}
           <div className="form-group">
             <label>Email</label>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />

@@ -1,13 +1,24 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot, collection, getDocs, updateDoc, arrayUnion, arrayRemove, setDoc } from 'firebase/firestore';
+import { motion, AnimatePresence } from 'framer-motion';
+import NotificationsBalloon from '../components/NotificationsBalloon';
 
 function DashboardUsuario() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedImg, setSelectedImg] = useState(null); // Estado para el Lightbox
+  const [suggestedUsers, setSuggestedUsers] = useState([]);
+  const [following, setFollowing] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [showNetworkModal, setShowNetworkModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const navigate = useNavigate();
 
   // Datos mock de eventos
   const events = {
@@ -20,15 +31,84 @@ function DashboardUsuario() {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const docRef = doc(db, 'users', user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
+        const unsubUser = onSnapshot(docRef, (docSnap) => {
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setUserData(data);
+            setFollowing(data.following || []);
+          }
+        });
+        
+        // Cargar usuarios para la sección de Networking
+        try {
+          const usersSnap = await getDocs(collection(db, "users"));
+          const usersList = [];
+          usersSnap.forEach((docItem) => {
+            if (docItem.id !== user.uid) {
+              usersList.push({ id: docItem.id, ...docItem.data() });
+            }
+          });
+          setAllUsers(usersList);
+          // Tomar hasta 2 usuarios aleatorios
+          setSuggestedUsers(usersList.sort(() => 0.5 - Math.random()).slice(0, 2));
+        } catch (error) {
+          console.error("Error fetching users for networking:", error);
         }
+      } else {
+        navigate('/login');
       }
       setLoading(false);
     });
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
+
+  // LÓGICA PARA SEGUIR/DEJAR DE SEGUIR
+  const handleFollowToggle = async (targetId) => {
+    const user = auth.currentUser;
+    if (!user) return;
+    
+    const isFollowing = following.includes(targetId);
+    
+    // Actualización visual optimista
+    if (isFollowing) {
+      setFollowing(prev => prev.filter(id => id !== targetId));
+    } else {
+      setFollowing(prev => [...prev, targetId]);
+    }
+    
+    try {
+      const myRef = doc(db, 'users', user.uid);
+      const targetRef = doc(db, 'users', targetId);
+      
+      if (isFollowing) {
+        await updateDoc(myRef, { following: arrayRemove(targetId) });
+        await updateDoc(targetRef, { followers: arrayRemove(user.uid) });
+      } else {
+        const notif = {
+          id: Date.now().toString(),
+          type: 'follow',
+          user: userData?.firstName || 'Alguien',
+          text: 'te ha empezado a seguir',
+          time: Date.now(),
+          img: userData?.profilePic || '/img/perfil-6.png',
+          active: true
+        };
+        await updateDoc(myRef, { following: arrayUnion(targetId) });
+        await updateDoc(targetRef, { 
+          followers: arrayUnion(user.uid),
+          notifications: arrayUnion(notif)
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      // Revertir en caso de error
+      if (isFollowing) {
+        setFollowing(prev => [...prev, targetId]);
+      } else {
+        setFollowing(prev => prev.filter(id => id !== targetId));
+      }
+    }
+  };
 
   // LÓGICA DEL CALENDARIO
   const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
@@ -56,18 +136,71 @@ function DashboardUsuario() {
       <aside className="dashboard-sidebar">
         <div className="sidebar-profile">
           <div className="profile-img-container">
-            <img src="/img/perfil-6.png" alt="Profile" className="profile-img" />
+            <img src={userData?.profilePic || "/img/perfil-6.png"} alt="Profile" className="profile-img" />
           </div>
-          <h2 className="profile-name">SARA<br />JIMÉNEZ</h2>
-          <p className="profile-email">{userData?.email || 'saraj@gmail.com'}</p>
+          <h2 className="profile-name">
+            {userData?.firstName ? (
+              <>{userData.firstName.toUpperCase()}<br />{userData.lastName?.toUpperCase()}</>
+            ) : (
+              <>BAJO<br />MUNDO</>
+            )}
+          </h2>
+          <p className="profile-email">{userData?.email}</p>
         </div>
 
         <nav className="sidebar-nav">
           <ul>
-            <li className="active"><Link to="/"><span className="icon">🏠</span> Inicio</Link></li>
+            <li className="active"><Link to="/dashboard-usuario"><span className="icon">🏠</span> Inicio</Link></li>
             <li><Link to="/perfil"><span className="icon">👤</span> Perfil</Link></li>
-            <li><Link to="/mensajes"><span className="icon">💬</span> Mensajes</Link></li>
-            <li><Link to="/notificaciones"><span className="icon">🔔</span> Notificaciones</Link></li>
+            <li>
+              <Link to="/mensajes" style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <span className="icon">💬</span> Mensajes
+                {userData?.unreadMessagesFrom?.length > 0 && (
+                  <span style={{
+                    marginLeft: 'auto',
+                    background: '#ff5f56',
+                    color: 'white',
+                    fontSize: '0.65rem',
+                    fontWeight: 'bold',
+                    padding: '2px 6px',
+                    borderRadius: '10px',
+                    boxShadow: '0 0 5px rgba(255,95,86,0.5)'
+                  }}>
+                    {userData.unreadMessagesFrom.length}
+                  </span>
+                )}
+              </Link>
+            </li>
+            <li style={{ position: 'relative' }}>
+              <button 
+                onClick={() => setShowNotifications(!showNotifications)}
+                className={`nav-btn ${showNotifications ? 'active' : ''}`}
+                style={{ position: 'relative' }}
+              >
+                <span className="icon">🔔</span> Notificaciones
+                {unreadCount > 0 && (
+                  <span style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '10px',
+                    background: '#ff5f56',
+                    color: 'white',
+                    fontSize: '0.65rem',
+                    fontWeight: 'bold',
+                    padding: '2px 6px',
+                    borderRadius: '10px',
+                    boxShadow: '0 0 5px rgba(255,95,86,0.5)'
+                  }}>
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+              <NotificationsBalloon 
+                isOpen={showNotifications} 
+                onClose={() => setShowNotifications(false)} 
+                onUnreadCountChange={setUnreadCount}
+              />
+            </li>
             <li><Link to="/ajustes"><span className="icon">⚙️</span> Ajustes</Link></li>
           </ul>
         </nav>
@@ -82,14 +215,14 @@ function DashboardUsuario() {
       {/* MAIN CONTENT */}
       <main className="dashboard-main">
         <div className="dashboard-grid">
-          
+
           {/* PRÓXIMOS EVENTOS */}
           <div className="widget-box calendar-widget-box">
             <div className="widget-header">
               <h3>PRÓXIMOS EVENTOS</h3>
               <span className="widget-icon">📅</span>
             </div>
-            
+
             <div className="mini-calendar-container">
               <div className="calendar-nav">
                 <button onClick={prevMonth}>&lt;</button>
@@ -106,7 +239,7 @@ function DashboardUsuario() {
                 {[...Array(daysInMonth)].map((_, i) => {
                   const dayNum = i + 1;
                   const isToday = dayNum === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
-                  
+
                   const events = {
                     10: { title: "Dembow Party", desc: "La discoteca se prende" },
                     21: { title: "Underground Battles", desc: "Freestyle en el bloque" },
@@ -114,7 +247,7 @@ function DashboardUsuario() {
                   };
 
                   const event = events[dayNum];
-                  
+
                   return (
                     <div key={dayNum} className={`mini-date ${isToday ? 'is-today' : ''} ${event ? 'has-event' : ''}`}>
                       {dayNum}
@@ -139,9 +272,9 @@ function DashboardUsuario() {
             </div>
             <div className="level-indicator">
               <div className="level-bar">
-                <div className="level-progress" style={{width: '70%'}}></div>
-                <div className="level-badge" style={{left: '70%'}}>
-                  70
+                <div className="level-progress" style={{ width: '70%' }}></div>
+                <div className="level-badge" style={{ left: '70%' }}>
+                  lvl 10
                   <span className="particle p1"></span>
                   <span className="particle p2"></span>
                   <span className="particle p3"></span>
@@ -163,24 +296,37 @@ function DashboardUsuario() {
             </div>
             <p className="widget-desc">¡CONECTA CON EL BAJO MUNDO!</p>
             <div className="connections-list">
-              <div className="connection-item">
-                <img src="/img/perfil-1.png" alt="Olivia" />
-                <div className="conn-info">
-                  <strong>OLIVIA</strong>
-                  <span>Artista</span>
-                </div>
-                <button className="btn-connect">+</button>
-              </div>
-              <div className="connection-item">
-                <img src="/img/perfil-2.png" alt="Weso" />
-                <div className="conn-info">
-                  <strong>WESO</strong>
-                  <span>Organizador</span>
-                </div>
-                <button className="btn-connect">+</button>
-              </div>
+              {suggestedUsers.length === 0 && <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>No hay más usuarios en la app.</p>}
+              {suggestedUsers.map(u => {
+                const isFollowing = following.includes(u.id);
+                return (
+                  <div className="connection-item" key={u.id}>
+                    <img src={u.profilePic || "/img/perfil-6.png"} alt={u.firstName} />
+                    <div className="conn-info">
+                      <strong>{u.firstName?.toUpperCase()}</strong>
+                      <span>{u.bio ? u.bio.substring(0, 15) + '...' : 'Nuevo en el bloque'}</span>
+                    </div>
+                    <button 
+                      className="btn-connect" 
+                      onClick={() => handleFollowToggle(u.id)}
+                      style={{
+                        background: isFollowing ? 'rgba(255,60,0,0.1)' : 'var(--lemon)',
+                        color: isFollowing ? '#ff5f56' : 'black',
+                        border: isFollowing ? '1px solid rgba(255,60,0,0.5)' : 'none',
+                        transition: '0.3s'
+                      }}
+                      title={isFollowing ? 'Dejar de seguir' : 'Seguir'}
+                    >
+                      {isFollowing ? '✕' : '+'}
+                    </button>
+                  </div>
+                );
+              })}
             </div>
-            <button className="btn-text">DESCUBRE MÁS <span>&#10140;</span></button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0' }}>
+              <button onClick={() => setShowNetworkModal(true)} className="btn-text" style={{ fontSize: '0.8rem', padding: 0 }}>VER MÁS <span>&#10140;</span></button>
+              <Link to="/mensajes" className="btn-text" style={{ textDecoration: 'none', fontSize: '0.8rem', padding: 0 }}>IR A MENSAJES <span>&#10140;</span></Link>
+            </div>
           </div>
 
           {/* RECOMPENSAS */}
@@ -237,6 +383,87 @@ function DashboardUsuario() {
           </div>
         </div>
       )}
+      )}
+
+      {/* MODAL DE NETWORKING */}
+      <AnimatePresence>
+        {showNetworkModal && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
+            onClick={() => setShowNetworkModal(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={e => e.stopPropagation()}
+              style={{ background: '#120804', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', width: '100%', maxWidth: '400px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.8)' }}
+            >
+              <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3 style={{ fontFamily: 'Bungee', color: 'white', margin: 0, fontSize: '1.2rem' }}>
+                  NETWORKING
+                </h3>
+                <button onClick={() => setShowNetworkModal(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', fontSize: '1.5rem', cursor: 'pointer', transition: '0.3s' }}>×</button>
+              </div>
+              <div style={{ padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                <input 
+                  type="text" 
+                  placeholder="Buscar usuarios..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{ width: '100%', padding: '0.8rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: 'white', outline: 'none' }}
+                />
+              </div>
+              <div style={{ padding: '1rem', maxHeight: '400px', overflowY: 'auto' }} className="custom-scrollbar">
+                {allUsers.length === 0 && <p style={{ textAlign: 'center', color: 'gray', padding: '2rem 0' }}>No hay otros usuarios.</p>}
+                {allUsers
+                  .filter(u => `${u.firstName || ''} ${u.lastName || ''}`.toLowerCase().includes(searchQuery.toLowerCase()))
+                  .map(user => {
+                    const isFollowing = following.includes(user.id);
+                    return (
+                      <div key={user.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', borderRadius: '12px', transition: '0.2s', borderBottom: '1px solid rgba(255,255,255,0.02)' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+                        <img src={user.profilePic || '/img/perfil-6.png'} alt={user.firstName} style={{ width: '45px', height: '45px', borderRadius: '50%', objectFit: 'cover' }} />
+                        <div style={{ flex: 1 }}>
+                          <strong style={{ display: 'block', color: 'white', fontSize: '0.9rem' }}>{user.firstName} {user.lastName}</strong>
+                          <span style={{ color: 'var(--lemon)', fontSize: '0.75rem' }}>@{user.firstName?.toLowerCase() || 'usuario'}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleFollowToggle(user.id);
+                            }}
+                            style={{ 
+                              background: isFollowing ? 'rgba(255,60,0,0.1)' : 'var(--lemon)', 
+                              border: isFollowing ? '1px solid rgba(255,60,0,0.5)' : 'none', 
+                              color: isFollowing ? '#ff5f56' : 'black', 
+                              padding: '0.5rem 0.8rem', 
+                              borderRadius: '8px', 
+                              cursor: 'pointer', 
+                              fontSize: '0.7rem', 
+                              fontWeight: '900', 
+                              transition: 'all 0.2s',
+                              width: '35px',
+                              textAlign: 'center'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                            title={isFollowing ? 'Dejar de seguir' : 'Seguir'}
+                          >
+                            {isFollowing ? 'X' : '+'}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                })}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
