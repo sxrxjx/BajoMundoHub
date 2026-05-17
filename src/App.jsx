@@ -15,6 +15,7 @@ import Perfil from './pages/Perfil';
 import Mensajes from './pages/Mensajes';
 import MiContenido from './pages/MiContenido';
 import Ajustes from './pages/Ajustes';
+import Notificaciones from './pages/Notificaciones';
 
 // Componente para manejar la visibilidad de los elementos comunes
 function AppContent() {
@@ -23,7 +24,8 @@ function AppContent() {
                       location.pathname === '/perfil' || 
                       location.pathname === '/mensajes' ||
                       location.pathname === '/mi-contenido' ||
-                      location.pathname === '/ajustes';
+                      location.pathname === '/ajustes' ||
+                      location.pathname === '/notificaciones';
 
   return (
     <>
@@ -42,6 +44,7 @@ function AppContent() {
           <Route path="/mensajes" element={<Mensajes />} />
           <Route path="/mi-contenido" element={<MiContenido />} />
           <Route path="/ajustes" element={<Ajustes />} />
+          <Route path="/notificaciones" element={<Notificaciones />} />
         </Routes>
       </main>
       {!isDashboard && <Footer />}

@@ -137,7 +137,7 @@ function Ajustes() {
             </li>
             <li style={{ position: 'relative' }}>
               <button 
-                onClick={() => setShowNotifications(!showNotifications)}
+                onClick={() => window.innerWidth <= 900 ? navigate('/notificaciones') : setShowNotifications(!showNotifications)}
                 className={`nav-btn ${showNotifications ? 'active' : ''}`}
                 style={{ position: 'relative' }}
               >
