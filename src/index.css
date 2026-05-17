@@ -4772,6 +4772,53 @@ nav.scrolled {
         right: 10px;
     }
 
+    /* Perfil */
+    .profile-header {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 1.2rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .profile-header h1 {
+        font-size: 2.2rem !important;
+        text-align: center !important;
+    }
+
+    .profile-header p {
+        text-align: center !important;
+        font-size: 0.85rem !important;
+    }
+
+    .profile-header div[style*="display: flex"] {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 0.8rem !important;
+    }
+
+    .profile-header .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 0.8rem 1.2rem !important;
+        font-size: 0.85rem !important;
+        margin: 0 !important;
+    }
+
+    .profile-content-wrapper .widget-box {
+        padding: 1.5rem 1.2rem !important;
+    }
+
+    .profile-info-preview h2 {
+        font-size: 1.8rem !important;
+    }
+
+    .profile-fields div[style*="display: flex"] {
+        flex-direction: column !important;
+        gap: 0.8rem !important;
+    }
+
     /* Perfil y Ajustes: Prevenir overflow de grids con minmax grande */
     .profile-preview-card,
     .form-row {
