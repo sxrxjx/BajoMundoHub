@@ -4575,8 +4575,19 @@ nav.scrolled {
     }
 
     .role-selector {
+        flex-direction: row !important;
+        gap: 0.4rem !important;
+    }
+
+    .login-card .form-row {
         flex-direction: column !important;
-        gap: 0.5rem !important;
+        text-align: left !important;
+        gap: 1rem !important;
+    }
+
+    .login-card .form-group input {
+        padding: 0.9rem 1.2rem !important;
+        border-radius: 12px !important;
     }
 
     /* Modals */
