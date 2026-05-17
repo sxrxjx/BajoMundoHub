@@ -253,9 +253,10 @@ function Perfil() {
               </Link>
             </li>
             <li style={{ position: 'relative' }}>
+              {/* Escritorio */}
               <button 
-                onClick={() => window.innerWidth <= 900 ? navigate('/notificaciones') : setShowNotifications(!showNotifications)}
-                className={`nav-btn ${showNotifications ? 'active' : ''}`}
+                onClick={() => setShowNotifications(!showNotifications)}
+                className={`nav-btn ${showNotifications ? 'active' : ''} desktop-only-nav`}
                 style={{ position: 'relative' }}
               >
                 <span className="icon">🔔</span> Notificaciones
@@ -276,6 +277,32 @@ function Perfil() {
                   </span>
                 )}
               </button>
+
+              {/* Móvil */}
+              <Link 
+                to="/notificaciones"
+                className="nav-btn mobile-only-nav"
+                style={{ position: 'relative' }}
+              >
+                <span className="icon">🔔</span> Notificaciones
+                {unreadCount > 0 && (
+                  <span style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '10px',
+                    background: '#ff5f56',
+                    color: 'white',
+                    fontSize: '0.65rem',
+                    fontWeight: 'bold',
+                    padding: '2px 6px',
+                    borderRadius: '10px',
+                    boxShadow: '0 0 5px rgba(255,95,86,0.5)'
+                  }}>
+                    {unreadCount}
+                  </span>
+                )}
+              </Link>
+
               <NotificationsBalloon 
                 isOpen={showNotifications} 
                 onClose={() => setShowNotifications(false)} 
