@@ -4495,7 +4495,7 @@ nav.scrolled {
         border-bottom: none !important;
         display: block !important;
         background: transparent !important;
-        position: static !important;
+        position: relative !important;
     }
 
     .sidebar-profile {
@@ -4605,8 +4605,26 @@ nav.scrolled {
         font-size: 1.3rem !important;
     }
 
+    .sidebar-footer {
+        position: absolute !important;
+        top: 2.15rem !important;
+        right: 2.2rem !important;
+        z-index: 10 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
     .sidebar-logo {
-        display: none !important;
+        display: block !important;
+        width: 70px !important;
+        filter: brightness(0) invert(1) !important;
+        opacity: 0.75 !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .sidebar-logo:hover {
+        opacity: 1 !important;
+        transform: scale(1.05) !important;
     }
 
     .dashboard-main {
