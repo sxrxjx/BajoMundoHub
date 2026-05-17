@@ -4058,7 +4058,8 @@ nav.scrolled {
     .event-hero,
     .comunidad-hero,
     .artist-hero,
-    .about-hero {
+    .about-hero,
+    .colab-hero {
         padding: 0 !important;
         text-align: center;
         display: flex;
@@ -4070,7 +4071,8 @@ nav.scrolled {
     .event-hero .container,
     .comunidad-hero .container,
     .artist-hero .container,
-    .about-hero .container {
+    .about-hero .container,
+    .colab-hero .container {
         padding: 0 !important;
         display: flex;
         flex-direction: column;
@@ -4083,7 +4085,8 @@ nav.scrolled {
     .event-logo-sign,
     .comunidad-hero-sign,
     .artist-hero-sign,
-    .about-hero-sign {
+    .about-hero-sign,
+    .colab-hero-sign {
 
         transform: rotate(-6deg) !important;
         padding: 1.5rem 2rem !important;
@@ -4100,7 +4103,8 @@ nav.scrolled {
     .event-hero-desc,
     .comunidad-hero-desc,
     .artist-hero-desc,
-    .about-hero-desc {
+    .about-hero-desc,
+    .colab-hero-desc {
         width: 90%;
         line-height: 1.1;
         margin-bottom: 6rem;
