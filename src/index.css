@@ -4590,6 +4590,15 @@ nav.scrolled {
         border-radius: 12px !important;
     }
 
+    .login-card .btn {
+        font-size: 1.1rem !important;
+        transform: none !important;
+        margin-bottom: 0 !important;
+        margin-top: 1.5rem !important;
+        padding: 1rem !important;
+        border-radius: 12px !important;
+    }
+
     /* Modals */
     .modal-content,
     .lightbox-content {
