@@ -3979,6 +3979,10 @@ nav.scrolled {
         max-width: 100vw;
     }
 
+    .section-padding {
+        padding: 3rem 0;
+    }
+
     /* Navbar */
     .nav-container {
         flex-direction: row;
@@ -4051,6 +4055,59 @@ nav.scrolled {
         font-size: 3rem;
     }
 
+    .event-hero,
+    .comunidad-hero,
+    .artist-hero {
+        padding: 0 !important;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .event-hero .container,
+    .comunidad-hero .container,
+    .artist-hero .container {
+        padding: 0 !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 50px;
+        margin-top: 150px;
+    }
+
+    .event-logo-sign,
+    .comunidad-hero-sign,
+    .artist-hero-sign {
+
+        transform: rotate(-6deg) !important;
+        padding: 1.5rem 2rem !important;
+        margin: 2rem auto !important;
+        text-align: center !important;
+
+        h1 {
+            font-size: 3rem !important;
+            letter-spacing: 0px;
+        }
+
+    }
+
+    .event-hero-desc,
+    .comunidad-hero-desc,
+    .artist-hero-desc {
+        width: 90%;
+        line-height: 1.1;
+        margin-bottom: 6rem;
+    }
+
+    .btn-primary {
+        font-size: 2rem;
+        transform: rotate(6deg);
+        margin-bottom: 80px;
+    }
+
     .hero-content p {
         font-size: 1rem;
     }
@@ -4064,7 +4121,7 @@ nav.scrolled {
 
     .hero-info h3 {
         width: 100% !important;
-        font-size: 2rem;
+        font-size: 1.5rem;
         /* Ajustar el h3 principal para movil */
     }
 
@@ -4138,9 +4195,171 @@ nav.scrolled {
     .artistas-grid,
     .comunidad-gallery-grid,
     .media-grid,
-    .gallery-mosaic {
+    .gallery-mosaic,
+    .grid-2 {
         grid-template-columns: 1fr;
-        max-width: 100vw;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .gallery-item.large,
+    .gallery-item.full-width {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
+    }
+
+    /* Artistas en Móvil */
+    .artist-profile {
+        padding: 2rem !important;
+        margin-bottom: 4rem !important;
+        border-radius: 30px !important;
+        gap: 2rem !important;
+        text-align: center;
+        grid-template-columns: 1fr !important;
+    }
+
+    .artist-profile:first-of-type {
+        margin-top: 2rem !important;
+    }
+
+    .artist-info {
+        text-align: center;
+    }
+
+    .artist-info h2 {
+        font-size: 3rem !important;
+    }
+
+    .artist-info p {
+        max-width: 100% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .artist-link {
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .artist-img-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .artist-img-container::before {
+        display: none; /* Hide decorative borders to save space on mobile if needed, or adjust */
+    }
+
+    /* El Reporte en Móvil */
+    .reporte-section {
+        margin-top: -20px;
+    }
+
+    .reporte-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .reporte-card img {
+        width: 100%;
+        height: 200px;
+    }
+
+    .reporte-link {
+        justify-content: center;
+    }
+
+    .reporte-title {
+        max-width: 100% !important;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .calendar-widget {
+        padding: 1.5rem !important;
+    }
+
+    /* Tarjetas de eventos horizontales a verticales en móvil */
+    .events-list {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .event-card-horizontal {
+        flex-direction: column;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: 10px solid var(--primary);
+        width: 100%;
+        max-width: 450px;
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .event-card-horizontal:hover {
+        border-left-color: rgba(255, 255, 255, 0.1);
+        border-top-color: var(--lemon);
+    }
+
+    .event-card-horizontal img {
+        width: 100%;
+        height: 250px;
+    }
+
+    .event-card-body {
+        text-align: center;
+    }
+
+    /* Menú de años (Eventos Pasados) en móvil */
+    .past-events-tabs {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+    }
+
+    .tab-year {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+
+    /* Ranking en móvil */
+    .ranking-podium {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .podium-card {
+        width: 100%;
+        max-width: 400px;
+        height: auto !important;
+        transform: scale(1) !important;
+    }
+
+    .podium-card.gold {
+        order: 1;
+    }
+
+    .podium-card.silver {
+        order: 2;
+    }
+
+    .podium-card.bronze {
+        order: 3;
+    }
+
+    .ranking-item {
+        padding: 1rem 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .ranking-item img {
+        margin-right: 0.5rem;
     }
 
     /* Ajuste del contador para móvil */

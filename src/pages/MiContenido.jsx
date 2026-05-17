@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
-import { doc, updateDoc, arrayUnion, onSnapshot } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'framer-motion';
 import NotificationsBalloon from '../components/NotificationsBalloon';
 
@@ -109,6 +109,24 @@ function MiContenido() {
       setMessage({ type: 'error', text: 'Error al leer la imagen.' });
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleDeletePhoto = async (imgUrl, e) => {
+    e.stopPropagation();
+    if(window.confirm("¿Seguro que quieres eliminar esta foto de tu galería?")) {
+      try {
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        const newGallery = gallery.filter(url => url !== imgUrl);
+        await updateDoc(userRef, {
+          gallery: newGallery
+        });
+        setMessage({ type: 'success', text: 'Foto eliminada con éxito.' });
+        setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+      } catch (error) {
+        console.error("Error al borrar foto", error);
+        setMessage({ type: 'error', text: 'Error al borrar la foto.' });
+      }
+    }
   };
 
   if (loading) return <div className="loading">CARGANDO...</div>;
@@ -258,6 +276,7 @@ function MiContenido() {
                   transition={{ delay: idx * 0.05 }}
                   onClick={() => setSelectedImg(imgUrl)}
                   style={{ 
+                    position: 'relative',
                     aspectRatio: '1', 
                     borderRadius: '15px', 
                     overflow: 'hidden', 
@@ -268,6 +287,30 @@ function MiContenido() {
                   onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
                   onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
                 >
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); handleDeletePhoto(imgUrl, e); }}
+                    style={{
+                      position: 'absolute',
+                      top: '10px',
+                      right: '10px',
+                      background: 'rgba(255, 59, 48, 0.8)',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: '30px',
+                      height: '30px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      zIndex: 10,
+                      fontSize: '1.2rem',
+                      lineHeight: '1'
+                    }}
+                    title="Borrar foto"
+                  >
+                    ×
+                  </button>
                   <img src={imgUrl} alt={`Foto ${idx}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </motion.div>
               ))}

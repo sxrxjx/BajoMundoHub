@@ -10,14 +10,25 @@ function Particles({ mode = 'float', color = 'rgba(255, 59, 48, 0.5)' }) {
     let particles = [];
     let animationFrameId;
 
+    let logicalWidth = canvas.parentElement.offsetWidth;
+    let logicalHeight = canvas.parentElement.offsetHeight;
+
     const resize = () => {
-      canvas.width = canvas.parentElement.offsetWidth;
-      canvas.height = canvas.parentElement.offsetHeight;
+      if (!canvas.parentElement) return;
+      logicalWidth = canvas.parentElement.offsetWidth;
+      logicalHeight = canvas.parentElement.offsetHeight;
+      
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = logicalWidth * dpr;
+      canvas.height = logicalHeight * dpr;
+      ctx.scale(dpr, dpr);
     };
 
-    window.addEventListener('resize', resize);
+    const resizeObserver = new ResizeObserver(() => resize());
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
     resize();
-
     class Particle {
       constructor() {
         this.reset();
@@ -25,15 +36,15 @@ function Particles({ mode = 'float', color = 'rgba(255, 59, 48, 0.5)' }) {
 
       reset() {
         if (mode === 'burst') {
-          this.x = canvas.width / 2;
-          this.y = canvas.height / 3.5;
+          this.x = logicalWidth / 2;
+          this.y = logicalHeight / 3.5;
           const angle = Math.random() * Math.PI * 2;
           const speed = Math.random() * 2 + 0.5;
           this.speedX = Math.cos(angle) * speed;
           this.speedY = Math.sin(angle) * speed;
         } else {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
+          this.x = Math.random() * logicalWidth;
+          this.y = Math.random() * logicalHeight;
           this.speedX = Math.random() * 1 - 0.5;
           this.speedY = Math.random() * 1 - 0.5;
         }
@@ -54,7 +65,7 @@ function Particles({ mode = 'float', color = 'rgba(255, 59, 48, 0.5)' }) {
             this.reset();
           }
         } else {
-          if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+          if (this.x < 0 || this.x > logicalWidth || this.y < 0 || this.y > logicalHeight) {
             this.reset();
           }
         }
@@ -74,7 +85,7 @@ function Particles({ mode = 'float', color = 'rgba(255, 59, 48, 0.5)' }) {
     }
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, logicalWidth, logicalHeight);
       particles.forEach(p => {
         p.update();
         p.draw();
@@ -85,7 +96,7 @@ function Particles({ mode = 'float', color = 'rgba(255, 59, 48, 0.5)' }) {
     animate();
 
     return () => {
-      window.removeEventListener('resize', resize);
+      resizeObserver.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, [mode, color]);
