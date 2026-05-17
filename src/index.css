@@ -4533,9 +4533,7 @@ nav.scrolled {
     }
 
     .sidebar-profile .profile-email {
-        font-size: 0.7rem !important;
-        margin: 0 !important;
-        color: var(--text-muted) !important;
+        display: none !important;
     }
 
     .sidebar-nav {
