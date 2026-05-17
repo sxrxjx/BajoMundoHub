@@ -263,7 +263,9 @@ function Notificaciones() {
                       </p>
                       <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)', marginTop: '0.4rem', display: 'block' }}>{getTimeAgo(n.time)}</span>
                     </div>
-                    {n.type === 'reward' && <span style={{ fontSize: '1.8rem', opacity: 0.5 }}>🎁</span>}
+                    {n.type === 'reward' && <span style={{ fontSize: '1.8rem', opacity: 0.8 }}>🎁</span>}
+                    {n.type === 'follow' && <span style={{ fontSize: '1.8rem', opacity: 0.8 }}>👤➕</span>}
+                    {n.type === 'unfollow' && <span style={{ fontSize: '1.8rem', opacity: 0.8 }}>👤➖</span>}
                   </motion.div>
                 ))}
               </div>

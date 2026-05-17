@@ -108,22 +108,60 @@ function DashboardUsuario() {
       const targetRef = doc(db, 'users', targetId);
       
       if (isFollowing) {
+        // UNFOLLOW
         await updateDoc(myRef, { following: arrayRemove(targetId) });
         await updateDoc(targetRef, { followers: arrayRemove(user.uid) });
+
+        // Crear alerta de unfollow y limpiar el follow anterior de este usuario
+        const targetSnap = await getDoc(targetRef);
+        if (targetSnap.exists()) {
+          const targetData = targetSnap.data();
+          const oldNotifs = targetData.notifications || [];
+          // Filtramos cualquier notificación de tipo follow o unfollow previa de este usuario
+          const filteredNotifs = oldNotifs.filter(n => !(n.senderId === user.uid && (n.type === 'follow' || n.type === 'unfollow')));
+          
+          const unfollowNotif = {
+            id: Date.now().toString(),
+            type: 'unfollow',
+            user: userData?.firstName || 'Alguien',
+            senderId: user.uid,
+            text: 'te ha dejado de seguir',
+            time: Date.now(),
+            img: userData?.profilePic || '/img/perfil-6.png',
+            active: true
+          };
+          
+          await updateDoc(targetRef, {
+            notifications: [...filteredNotifs, unfollowNotif]
+          });
+        }
       } else {
+        // FOLLOW
         const notif = {
           id: Date.now().toString(),
           type: 'follow',
           user: userData?.firstName || 'Alguien',
+          senderId: user.uid,
           text: 'te ha empezado a seguir',
           time: Date.now(),
           img: userData?.profilePic || '/img/perfil-6.png',
           active: true
         };
+
+        // También limpiamos unfollows previos de la lista del receptor si los hubiera
+        const targetSnap = await getDoc(targetRef);
+        let updatedNotifs = [notif];
+        if (targetSnap.exists()) {
+          const targetData = targetSnap.data();
+          const oldNotifs = targetData.notifications || [];
+          const filteredNotifs = oldNotifs.filter(n => !(n.senderId === user.uid && (n.type === 'follow' || n.type === 'unfollow')));
+          updatedNotifs = [...filteredNotifs, notif];
+        }
+
         await updateDoc(myRef, { following: arrayUnion(targetId) });
         await updateDoc(targetRef, { 
           followers: arrayUnion(user.uid),
-          notifications: arrayUnion(notif)
+          notifications: updatedNotifs
         });
       }
     } catch (error) {
