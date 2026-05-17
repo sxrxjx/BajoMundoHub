@@ -4611,7 +4611,7 @@ nav.scrolled {
     .sidebar-nav li .nav-btn.active {
         background: transparent !important;
         color: var(--lemon) !important;
-        transform: scale(1.05) !important;
+        transform: none !important;
     }
 
     .sidebar-nav li a .icon,
@@ -4873,5 +4873,21 @@ nav.scrolled {
 
     .chat-area {
         height: 500px;
+    }
+
+    /* Override responsivo para los botones de notificaciones */
+    .sidebar-nav li .desktop-only-nav {
+        display: none !important;
+    }
+    .sidebar-nav li .mobile-only-nav {
+        display: flex !important;
+    }
+
+    /* Posicionamiento absoluto automático para todas las burbujas de conteo en el menú móvil */
+    .sidebar-nav li span[style*="background"] {
+        position: absolute !important;
+        top: 6px !important;
+        right: 15px !important;
+        margin: 0 !important;
     }
 }

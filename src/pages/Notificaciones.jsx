@@ -11,10 +11,13 @@ function Notificaciones() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    let unsubAuth = () => {};
+    let unsubSnapshot = () => {};
+
+    unsubAuth = auth.onAuthStateChanged((user) => {
       if (user) {
         const docRef = doc(db, 'users', user.uid);
-        const unsub = onSnapshot(docRef, (docSnap) => {
+        unsubSnapshot = onSnapshot(docRef, (docSnap) => {
           if (docSnap.exists()) {
             const data = docSnap.data();
             setUserData(data);
@@ -22,14 +25,21 @@ function Notificaciones() {
             notifs.sort((a, b) => b.time - a.time);
             setNotifications(notifs);
           }
+          setLoading(false);
+        }, (error) => {
+          console.error("Firestore onSnapshot error:", error);
+          setLoading(false);
         });
-        return () => unsub();
       } else {
         navigate('/login');
+        setLoading(false);
       }
-      setLoading(false);
     });
-    return () => unsubscribe();
+
+    return () => {
+      unsubAuth();
+      unsubSnapshot();
+    };
   }, [navigate]);
 
   const handleClear = async (notif) => {
@@ -112,12 +122,42 @@ function Notificaciones() {
                 )}
               </Link>
             </li>
-            <li className="active">
-              <Link to="/notificaciones">
+            <li className="active" style={{ position: 'relative' }}>
+              {/* Escritorio */}
+              <Link 
+                to="/notificaciones"
+                className="nav-btn active desktop-only-nav"
+                style={{ position: 'relative' }}
+              >
                 <span className="icon">🔔</span> Notificaciones
                 {notifications.filter(n => n.active).length > 0 && (
                   <span style={{
                     marginLeft: 'auto',
+                    background: '#ff5f56',
+                    color: 'white',
+                    fontSize: '0.65rem',
+                    fontWeight: 'bold',
+                    padding: '2px 6px',
+                    borderRadius: '10px',
+                    boxShadow: '0 0 5px rgba(255,95,86,0.5)'
+                  }}>
+                    {notifications.filter(n => n.active).length}
+                  </span>
+                )}
+              </Link>
+
+              {/* Móvil */}
+              <Link 
+                to="/notificaciones"
+                className="nav-btn active mobile-only-nav"
+                style={{ position: 'relative' }}
+              >
+                <span className="icon">🔔</span> Notificaciones
+                {notifications.filter(n => n.active).length > 0 && (
+                  <span style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '10px',
                     background: '#ff5f56',
                     color: 'white',
                     fontSize: '0.65rem',
