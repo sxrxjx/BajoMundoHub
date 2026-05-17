@@ -4526,17 +4526,76 @@ nav.scrolled {
     }
 
     .dashboard-main {
-        padding: 1rem !important;
+        margin-left: 0 !important;
+        padding: 1.2rem !important;
         height: auto !important;
         overflow-y: visible !important;
+        box-sizing: border-box !important;
     }
 
     /* Dashboard Grid (Main View) */
     .dashboard-grid {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 1.2rem;
         height: auto;
+    }
+
+    .widget-box {
+        padding: 1.2rem !important;
+    }
+
+    .widget-box.assistance-box {
+        overflow: visible !important; /* Prevent level badge from getting cut off on sides */
+    }
+
+    .widget-header h3 {
+        font-size: 1.2rem !important;
+    }
+
+    .level-badge {
+        width: 52px !important;
+        height: 52px !important;
+        font-size: 0.85rem !important;
+        border-width: 2px !important;
+    }
+
+    .level-status {
+        font-size: 1.1rem !important;
+    }
+
+    .rewards-list {
+        grid-template-columns: 1fr !important;
+        gap: 0.6rem !important;
+    }
+
+    .reward-card {
+        padding: 0.6rem !important;
+        gap: 0.8rem !important;
+    }
+
+    .reward-card img {
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    .reward-info h4 {
+        font-size: 0.75rem !important;
+        white-space: normal !important; /* Allow wrapping on small screens */
+    }
+
+    .reward-info p {
+        font-size: 0.6rem !important;
+        margin-bottom: 0.2rem !important;
+    }
+
+    .btn-mini {
+        font-size: 0.65rem !important;
+        padding: 0.4rem 0.8rem !important;
+    }
+
+    .connection-item {
+        padding: 0.6rem !important;
     }
 
     /* Login */
