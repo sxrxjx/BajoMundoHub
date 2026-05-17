@@ -4540,13 +4540,43 @@ nav.scrolled {
     }
 
     /* Login */
+    .login-page {
+        height: auto !important;
+        min-height: 100vh !important;
+        padding: 6rem 1rem 3rem 1rem !important;
+        overflow-y: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+
     .login-card {
-        width: 95%;
-        padding: 1.5rem;
+        width: 100% !important;
+        max-width: 400px !important;
+        padding: 2rem 1.5rem !important;
+        border-radius: 30px !important;
+        box-sizing: border-box !important;
+    }
+
+    .login-back-btn {
+        top: 1.5rem !important;
+        left: 1rem !important;
+        padding: 0.6rem 1.2rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    .login-logo {
+        width: 100px !important;
+    }
+
+    .login-welcome {
+        font-size: 1.5rem !important;
     }
 
     .role-selector {
-        flex-direction: column;
+        flex-direction: column !important;
+        gap: 0.5rem !important;
     }
 
     /* Modals */
