@@ -14,6 +14,7 @@ function Mensajes() {
   const [activeChat, setActiveChat] = useState(null);
   const [showNotifications, setShowNotifications] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [mobileView, setMobileView] = useState('contacts');
   
   const scrollRef = useRef(null);
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ function Mensajes() {
             const targetUser = usersList.find(u => u.id === openChatId);
             if (targetUser) {
               setActiveChat(targetUser);
+              setMobileView('chat');
             } else if (usersList.length > 0 && !activeChat) {
               setActiveChat(usersList[0]);
             }
@@ -237,7 +239,7 @@ function Mensajes() {
 
           <div className="chat-interface-wrapper">
             {/* Lista de Usuarios */}
-            <div className="chat-contacts">
+            <div className={`chat-contacts ${mobileView === 'contacts' ? 'mobile-visible' : 'mobile-hidden'}`}>
               <div className="contacts-header">
                 <input type="text" placeholder="Buscar contacto..." className="search-bar" />
               </div>
@@ -249,7 +251,10 @@ function Mensajes() {
                     <div 
                       key={u.id} 
                       className={`contact-item ${activeChat?.id === u.id ? 'active' : ''}`}
-                      onClick={() => setActiveChat(u)}
+                      onClick={() => {
+                        setActiveChat(u);
+                        setMobileView('chat');
+                      }}
                       style={{ position: 'relative' }}
                     >
                       <div className="contact-img">
@@ -270,11 +275,17 @@ function Mensajes() {
             </div>
 
             {/* Ventana de Chat */}
-            <div className="chat-window">
+            <div className={`chat-window ${mobileView === 'chat' ? 'mobile-visible' : 'mobile-hidden'}`}>
               {activeChat ? (
                 <>
                   <header className="chat-header">
                     <div className="active-contact-info">
+                      <button 
+                        className="mobile-chat-back-btn" 
+                        onClick={() => setMobileView('contacts')}
+                      >
+                        ←
+                      </button>
                       <img src={activeChat.profilePic || '/img/perfil-6.png'} alt={activeChat.firstName} />
                       <div>
                         <h4>{activeChat.firstName?.toUpperCase()} {activeChat.lastName?.toUpperCase()}</h4>
@@ -423,6 +434,10 @@ function Mensajes() {
           z-index: 100;
         }
 
+        .mobile-chat-back-btn {
+          display: none;
+        }
+
         @media (max-width: 1024px) {
           .chat-modal-window {
             height: 90vh;
@@ -432,17 +447,54 @@ function Mensajes() {
         @media (max-width: 768px) {
           .chat-popup-container {
             padding: 0 !important;
+            height: calc(100vh - 65px) !important;
           }
           .chat-modal-window {
-            height: 100vh;
+            height: 100% !important;
             border-radius: 0;
             max-width: 100%;
+            border: none;
           }
-          .chat-contacts {
-            display: none;
+          .chat-contacts.mobile-visible {
+            display: flex !important;
+            width: 100% !important;
+          }
+          .chat-contacts.mobile-hidden {
+            display: none !important;
+          }
+          .chat-window.mobile-visible {
+            display: flex !important;
+            width: 100% !important;
+          }
+          .chat-window.mobile-hidden {
+            display: none !important;
+          }
+          .mobile-chat-back-btn {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--lemon);
+            font-size: 1.4rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            margin-right: 0.8rem;
+            cursor: pointer;
+            outline: none;
           }
           .window-dots, .window-actions .win-btn:not(:last-child) {
             display: none;
+          }
+          .chat-messages {
+            padding: 1rem !important;
+          }
+          .message-bubble-wrapper {
+            max-width: 88% !important;
+          }
+          .chat-input-area {
+            padding: 1rem !important;
           }
         }
       `}</style>
