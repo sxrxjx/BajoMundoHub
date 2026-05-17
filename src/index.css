@@ -4484,45 +4484,129 @@ nav.scrolled {
         height: auto;
         min-height: 100vh;
         overflow-y: auto;
+        padding-bottom: 75px !important; /* Prevent content clipping under the tab bar */
     }
 
     .dashboard-sidebar {
-        width: 100%;
-        height: auto;
-        padding: 1rem;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
+        width: 100% !important;
+        height: auto !important;
+        padding: 0 !important;
+        border-right: none !important;
+        border-bottom: none !important;
+        display: block !important;
+        background: transparent !important;
+        position: static !important;
     }
 
     .sidebar-profile {
-        text-align: center;
-        margin-bottom: 1rem;
+        background: rgba(20, 20, 20, 0.6) !important;
+        backdrop-filter: blur(20px) !important;
+        padding: 1rem !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        margin: 1.2rem 1.2rem 0 1.2rem !important;
+        width: calc(100% - 2.4rem) !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 1rem !important;
+        text-align: left !important;
+    }
+
+    .sidebar-profile .profile-img-container {
+        width: 50px !important;
+        height: 50px !important;
+        margin: 0 !important;
+    }
+
+    .sidebar-profile .profile-img {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .sidebar-profile .profile-name {
+        font-size: 1.1rem !important;
+        text-align: left !important;
+        margin: 0 !important;
+        line-height: 1.1 !important;
+        color: white !important;
+    }
+
+    .sidebar-profile .profile-email {
+        font-size: 0.7rem !important;
+        margin: 0 !important;
+        color: var(--text-muted) !important;
+    }
+
+    .sidebar-nav {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 9999 !important;
+        background: rgba(10, 10, 10, 0.95) !important;
+        backdrop-filter: blur(25px) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        padding: 0.4rem 0.2rem !important;
+        height: 65px !important;
+        display: flex !important;
+        align-items: center !important;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5) !important;
+        box-sizing: border-box !important;
     }
 
     .sidebar-nav ul {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        justify-content: space-around !important;
+        width: 100% !important;
+        gap: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
 
     .sidebar-nav li {
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
+        flex: 1 !important;
+        display: flex !important;
+        justify-content: center !important;
     }
 
-    .sidebar-nav a,
-    .nav-btn {
-        padding: 0.5rem;
-        font-size: 0.8rem;
-        justify-content: center;
+    .sidebar-nav li a,
+    .sidebar-nav li .nav-btn {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.1rem !important;
+        padding: 0.3rem 0 !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-size: 0.65rem !important;
+        font-weight: 700 !important;
+        background: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        transition: all 0.2s ease !important;
+        width: 100% !important;
+        transform: none !important;
+    }
+
+    .sidebar-nav li.active a,
+    .sidebar-nav li a:hover,
+    .sidebar-nav li .nav-btn:hover,
+    .sidebar-nav li .nav-btn.active {
+        background: transparent !important;
+        color: var(--lemon) !important;
+        transform: scale(1.05) !important;
+    }
+
+    .sidebar-nav li a .icon,
+    .sidebar-nav li .nav-btn .icon {
+        font-size: 1.3rem !important;
     }
 
     .sidebar-logo {
-        display: none;
+        display: none !important;
     }
 
     .dashboard-main {
