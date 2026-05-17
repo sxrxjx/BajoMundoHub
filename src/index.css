@@ -4819,6 +4819,10 @@ nav.scrolled {
         gap: 0.8rem !important;
     }
 
+    .profile-content-wrapper .btn {
+        transform: none !important;
+    }
+
     /* Perfil y Ajustes: Prevenir overflow de grids con minmax grande */
     .profile-preview-card,
     .form-row {
